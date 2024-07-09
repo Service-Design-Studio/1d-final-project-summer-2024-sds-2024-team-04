@@ -26,4 +26,5 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_07_105903) do
     t.datetime "updated_at", null: false
     t.string "role"
   end
+
 end
