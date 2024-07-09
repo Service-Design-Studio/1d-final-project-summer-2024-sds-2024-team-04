@@ -13,6 +13,7 @@ class ChatTranscriptsController < ApplicationController
   
     def index
         @chat_transcripts = ChatTranscript.order(created_at: :desc)
+        render json: @chat_transcripts
     end
   end
   

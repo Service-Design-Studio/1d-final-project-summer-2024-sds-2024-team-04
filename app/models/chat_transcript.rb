@@ -5,7 +5,7 @@ class ChatTranscript < ApplicationRecord
   def self.import_csv(file)
     CSV.foreach(file.path, headers: true) do |row|
       ChatTranscript.create!({
-        messaging_session_id: row['Messaging Session Id'],
+        messaging_session_id: row['Messaging Session ID'],
         case_id: row['Case Id'],
         assigned_queue_name: row['Assigned Queue Name'],
         assigned_officer: row['Assigned Officer'],
