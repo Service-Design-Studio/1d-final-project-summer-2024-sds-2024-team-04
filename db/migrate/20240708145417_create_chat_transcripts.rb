@@ -1,19 +1,18 @@
-class CreateChatTranscripts < ActiveRecord::Migration[7.0]
+# db/migrate/[timestamp]_create_chat_transcripts.rb
+class CreateChatTranscripts < ActiveRecord::Migration[6.0]
   def change
     create_table :chat_transcripts do |t|
-      t.integer :chat_id
-      t.integer :messaging_section_id
-      t.integer :case_id
-      t.integer :assigned_officer_id
+      t.string :messaging_session_id
+      t.string :case_id
+      t.string :assigned_queue_name
+      t.string :assigned_officer
       t.string :messaging_user
-      t.integer :MOP_phone_number
+      t.string :mop_phone_number
       t.text :message
       t.string :short_url
-      t.references :attachment, polymorphic: true, null: true
-      t.text :topic
-      t.time :datetime
-      t.boolean :isAudited
-
+      t.string :attachment # Assuming attachment is a file path or URL
+      t.datetime :time
+      
       t.timestamps
     end
   end

@@ -1,0 +1,38 @@
+<!-- app/views/chat_transcripts/index.html.erb -->
+<h1>Chat Transcripts</h1>
+<% if @chat_transcripts.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Messaging Session ID</th>
+        <th>Case ID</th>
+        <th>Assigned Queue Name</th>
+        <th>Assigned Officer</th>
+        <th>Messaging User</th>
+        <th>MOP Phone Number</th>
+        <th>Message</th>
+        <th>Short URL</th>
+        <th>Attachment</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @chat_transcripts.each do |chat_transcript| %>
+        <tr>
+          <td><%= chat_transcript.messaging_session_id %></td>
+          <td><%= chat_transcript.case_id %></td>
+          <td><%= chat_transcript.assigned_queue_name %></td>
+          <td><%= chat_transcript.assigned_officer %></td>
+          <td><%= chat_transcript.messaging_user %></td>
+          <td><%= chat_transcript.mop_phone_number %></td>
+          <td><%= chat_transcript.message %></td>
+          <td><%= chat_transcript.short_url %></td>
+          <td><%= chat_transcript.attachment %></td>
+          <td><%= chat_transcript.time %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No chat transcripts found.</p>
+<% end %>

@@ -1,0 +1,5 @@
+<!-- app/views/chat_transcripts/import.html.erb -->
+<%= form_tag import_chat_transcripts_path, multipart: true do %>
+  <%= file_field_tag :file %>
+  <%= submit_tag 'Import CSV' %>
+<% end %>

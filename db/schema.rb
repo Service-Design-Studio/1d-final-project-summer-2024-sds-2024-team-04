@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_08_145417) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_09_070107) do
   create_table "chat_transcripts", force: :cascade do |t|
     t.integer "chat_id"
-    t.integer "messaging_section_id"
+    t.string "messaging_section_id"
     t.integer "case_id"
     t.integer "assigned_officer_id"
     t.string "messaging_user"
