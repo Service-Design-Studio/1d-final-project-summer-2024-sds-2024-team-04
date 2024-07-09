@@ -23,3 +23,19 @@
   )
   # puts "Created employee with role: #{role}"
 end
+
+5.times do
+  Chat.create(
+    chat_id: Faker::Number.number(digits:5),
+    messaging_section_id: Faker::Number.number(digits:5),
+    case_id: Faker::Number.number(digits:5),
+    assigned_officer_id: Faker::Number.number(digits:3),
+    messaging_user: Faker::Name.name,
+    MOP_phone_number: Faker::PhoneNumber.phone_number,
+    message: Faker::Lorem.sentence(word_count: 3),
+    short_url: nil,
+    topic: Faker::Lorem.sentence(word_count: 1),
+    datetime: Faker::Time.between_dates(from: 1.year.ago, to: Date.today, period: :all),
+    isAudited: Faker::Boolean.boolean
+  )
+end
