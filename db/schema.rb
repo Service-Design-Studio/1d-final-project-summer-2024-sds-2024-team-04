@@ -10,24 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_09_070107) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_09_125340) do
   create_table "chat_transcripts", force: :cascade do |t|
-    t.integer "chat_id"
-    t.string "messaging_section_id"
-    t.integer "case_id"
-    t.integer "assigned_officer_id"
+    t.string "messaging_session_id"
+    t.string "case_id"
+    t.string "assigned_queue_name"
+    t.string "assigned_officer"
     t.string "messaging_user"
-    t.integer "MOP_phone_number"
+    t.string "mop_phone_number"
     t.text "message"
     t.string "short_url"
-    t.string "attachment_type"
-    t.integer "attachment_id"
-    t.text "topic"
-    t.time "datetime"
-    t.boolean "isAudited"
+    t.string "attachment"
+    t.datetime "time", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["attachment_type", "attachment_id"], name: "index_chat_transcripts_on_attachment"
   end
 
   create_table "employees", force: :cascade do |t|

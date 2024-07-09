@@ -24,18 +24,27 @@
   # puts "Created employee with role: #{role}"
 end
 
-5.times do
-  Chat.create(
-    chat_id: Faker::Number.number(digits:5),
-    messaging_section_id: Faker::Number.number(digits:5),
-    case_id: Faker::Number.number(digits:5),
-    assigned_officer_id: Faker::Number.number(digits:3),
-    messaging_user: Faker::Name.name,
-    MOP_phone_number: Faker::PhoneNumber.phone_number,
-    message: Faker::Lorem.sentence(word_count: 3),
-    short_url: nil,
-    topic: Faker::Lorem.sentence(word_count: 1),
-    datetime: Faker::Time.between_dates(from: 1.year.ago, to: Date.today, period: :all),
-    isAudited: Faker::Boolean.boolean
+# db/seeds.rb
+
+require 'faker'
+
+# Clear existing data
+ChatTranscript.delete_all
+
+# Create sample chat transcripts
+50.times do
+  ChatTranscript.create(
+    messaging_session_id: Faker::Alphanumeric.alphanumeric(number: 10),
+    case_id: Faker::Alphanumeric.alphanumeric(number: 10),
+    assigned_queue_name: Faker::Company.industry,
+    assigned_officer: Faker::Name.name,
+    messaging_user: Faker::Internet.username,
+    mop_phone_number: Faker::PhoneNumber.cell_phone,
+    message: Faker::Lorem.paragraph(sentence_count: 3),
+    short_url: Faker::Internet.url,
+    attachment: Faker::File.file_name(dir: 'path/to'),
+    time: Faker::Time.backward(days: 30, period: :all)
   )
 end
+
+puts "50 chat transcripts created successfully."
