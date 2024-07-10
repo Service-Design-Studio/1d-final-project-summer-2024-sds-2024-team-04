@@ -11,7 +11,6 @@ class CreateEmployees < ActiveRecord::Migration[7.0]
       t.string :state
       t.date :date_of_birth
       t.date :date_of_hiring
-
       t.timestamps
     end
   end

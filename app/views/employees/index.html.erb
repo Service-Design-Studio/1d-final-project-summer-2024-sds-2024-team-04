@@ -60,11 +60,6 @@
     </div>
   <% end %>
 
-  <%= form_tag import_employees_path, multipart: true do %>
-    <%= file_field_tag :file %>
-    <%= submit_tag "Import CSV" %>
-  <% end %>
-
   <% if @employees.any? %>
     <table class="table table-striped">
       <thead>
