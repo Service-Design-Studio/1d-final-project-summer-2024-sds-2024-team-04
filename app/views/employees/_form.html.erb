@@ -1,57 +1,68 @@
 <%= form_with(model: employee, local: true, html: { class: "row g-3" }) do |form| %>
+  <% if employee.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
+      <ul>
+        <% employee.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <div class="col-md-6">
-    <%= form.label :first_name, class: "form-label" %>
-    <%= form.text_field :first_name, class: "form-control" %>
+    <%= form.label :first_name, class: "form-label", for: "employee_first_name" %>
+    <%= form.text_field :first_name, class: "form-control", id: "employee_first_name" %>
   </div>
 
   <div class="col-md-6">
-    <%= form.label :last_name, class: "form-label" %>
-    <%= form.text_field :last_name, class: "form-control" %>
+    <%= form.label :last_name, class: "form-label", for: "employee_last_name" %>
+    <%= form.text_field :last_name, class: "form-control", id: "employee_last_name" %>
   </div>
 
   <div class="col-md-6">
-    <%= form.label :email, class: "form-label" %>
-    <%= form.email_field :email, class: "form-control" %>
+    <%= form.label :email, class: "form-label", for: "employee_email" %>
+    <%= form.email_field :email, class: "form-control", id: "employee_email" %>
   </div>
 
   <div class="col-md-6">
-    <%= form.label :contact_number, class: "form-label" %>
-    <%= form.text_field :contact_number, class: "form-control" %>
+    <%= form.label :contact_number, class: "form-label", for: "employee_contact_number" %>
+    <%= form.text_field :contact_number, class: "form-control", id: "employee_contact_number" %>
   </div>
 
   <div class="col-12">
-    <%= form.label :address, class: "form-label" %>
-    <%= form.text_area :address, class: "form-control" %>
+    <%= form.label :address, class: "form-label", for: "employee_address" %>
+    <%= form.text_area :address, class: "form-control", id: "employee_address" %>
   </div>
 
   <div class="col-md-4">
-    <%= form.label :pincode, class: "form-label" %>
-    <%= form.text_field :pincode, class: "form-control" %>
+    <%= form.label :pincode, class: "form-label", for: "employee_pincode" %>
+    <%= form.text_field :pincode, class: "form-control", id: "employee_pincode" %>
   </div>
 
   <div class="col-md-4">
-    <%= form.label :city, class: "form-label" %>
-    <%= form.text_field :city, class: "form-control" %>
+    <%= form.label :city, class: "form-label", for: "employee_city" %>
+    <%= form.text_field :city, class: "form-control", id: "employee_city" %>
   </div>
 
   <div class="col-md-4">
-    <%= form.label :state, class: "form-label" %>
-    <%= form.text_field :state, class: "form-control" %>
+    <%= form.label :state, class: "form-label", for: "employee_state" %>
+    <%= form.text_field :state, class: "form-control", id: "employee_state" %>
   </div>
 
   <div class="col-md-6">
-    <%= form.label :date_of_birth, class: "form-label" %>
-    <%= form.date_field :date_of_birth, class: "form-control" %>
+    <%= form.label :date_of_birth, class: "form-label", for: "employee_date_of_birth" %>
+    <%= form.date_field :date_of_birth, class: "form-control", id: "employee_date_of_birth" %>
   </div>
 
   <div class="col-md-6">
-    <%= form.label :date_of_hiring, class: "form-label" %>
-    <%= form.date_field :date_of_hiring, class: "form-control" %>
+    <%= form.label :date_of_hiring, class: "form-label", for: "employee_date_of_hiring" %>
+    <%= form.date_field :date_of_hiring, class: "form-control", id: "employee_date_of_hiring" %>
   </div>
 
   <div class="col-md-6">
-    <%= form.label :role, class: "form-label" %>
-    <%= form.text_field :role, class: "form-control" %>
+    <%= form.label :role, class: "form-label", for: "employee_role" %>
+    <%= form.text_field :role, class: "form-control", id: "employee_role" %>
   </div>
 
   <div class="col-12">
