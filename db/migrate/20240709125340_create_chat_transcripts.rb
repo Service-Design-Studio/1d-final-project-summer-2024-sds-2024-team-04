@@ -12,7 +12,6 @@ class CreateChatTranscripts < ActiveRecord::Migration[6.0]
       t.string :short_url
       t.string :attachment # Assuming attachment is a file path or URL
       t.datetime :time
-      
       t.timestamps
     end
   end
