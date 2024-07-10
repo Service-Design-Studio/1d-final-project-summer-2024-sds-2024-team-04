@@ -4,9 +4,16 @@ require 'csv'
 class ChatTranscript < ApplicationRecord
   def self.import_csv(file)
     CSV.foreach(file.path, headers: true) do |row|
-      ChatTranscript.create!({
+      # Check if required fields are blank
+      if row['Time'].blank?
+        raise StandardError.new("CSV contains rows with missing required fields.")
+      end
+      
+      # Your import logic here if the row passes validation
+      # Example: Create or update ChatTranscript records based on row data
+      ChatTranscript.create!(
         messaging_session_id: row['Messaging Session ID'],
-        case_id: row['Case Id'],
+        case_id: row['Case ID'],
         assigned_queue_name: row['Assigned Queue Name'],
         assigned_officer: row['Assigned Officer'],
         messaging_user: row['Messaging User'],
@@ -14,10 +21,8 @@ class ChatTranscript < ApplicationRecord
         message: row['Message'],
         short_url: row['Short URL'],
         attachment: row['Attachment'],
-        time: DateTime.parse(row['Time']) # Parsing the time to datetime format
-      })
+        time: row['Time']
+      )
     end
-  rescue StandardError => e
-    puts "Error importing CSV: #{e.message}"
   end
 end

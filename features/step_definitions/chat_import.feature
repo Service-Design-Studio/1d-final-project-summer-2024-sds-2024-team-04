@@ -9,3 +9,6 @@ Feature: Visiting the Import Page
     When I visit the chat transcripts page
     Then I should see the chat transcript details on the chat transcript list
 
+  Scenario: Import an invalid chat transcript CSV file
+    When I upload an invalid CSV file
+    Then I should see error messages indicating the invalid chat transcripts
