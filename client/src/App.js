@@ -11,10 +11,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element=<EmployeeList/> />
-        <Route path="/employee/:id" element=<EmployeeDetails/> />
-        <Route path="/employee/new" element=<EmployeeNewForm/> />
-        <Route path="/employee/:id/edit" element=<EmployeeEditForm/> />
+        <Route path="/" element=<EmployeeList /> />
+        <Route path="/employee/:id" element=<EmployeeDetails /> />
+        <Route path="/employee/new" element=<EmployeeNewForm /> />
+        <Route path="/employee/:id/edit" element=<EmployeeEditForm /> />
         <Route path="/chat_transcripts" element=<ChatTranscriptsList /> />
         <Route path="/chat_transcripts/import" element=<ChatTranscriptImport /> />
       </Routes>

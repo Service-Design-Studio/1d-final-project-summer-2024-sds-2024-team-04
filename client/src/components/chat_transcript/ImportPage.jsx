@@ -1,7 +1,7 @@
 // ImportPage.jsx
 
 import React, { useState } from 'react';
-import axios from 'axios'; // Use axios or fetch for HTTP requests
+import axios from 'axios';
 
 const ImportPage = () => {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -27,10 +27,10 @@ const ImportPage = () => {
             });
 
             console.log(response.data); // Handle success response
-            alert('CSV imported successfully.');
+            alert(response.data.message || 'CSV imported successfully.');
         } catch (error) {
-            console.error('Error importing CSV:', error);
-            alert('Error importing CSV.');
+            console.error('Error importing CSV:', error.response?.data || error.message);
+            alert(error.response?.data.error || 'Error importing CSV.');
         }
     };
 
