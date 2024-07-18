@@ -19,7 +19,7 @@ RUN gem install bundler -v 2.4.22 && bundle install
 COPY . .
 
 # Set environment variables
-ENV RAILS_ENV=production
+ENV RAILS_ENV=test
 ENV RAILS_SERVE_STATIC_FILES=true
 ENV RAILS_LOG_TO_STDOUT=true
 ENV SECRET_KEY_BASE=74b4f8658db4cc359c4f6d8401d043e91f449e10c18c958b1162b12e78fa6395c2860ca4b5da7b83228103a12042259b1d6ab9d67d938a3946a17000133ba239
@@ -27,6 +27,8 @@ ENV SECRET_KEY_BASE=74b4f8658db4cc359c4f6d8401d043e91f449e10c18c958b1162b12e78fa
 # Precompile assets and prepare the database
 RUN bundle exec rake assets:precompile
 RUN bundle exec rake db:setup
+RUN bundle exec rake db:migrate
+RUN bundle exec rake db:seed
 
 # Expose port 8080 to the outside world
 EXPOSE 8080
