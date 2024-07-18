@@ -1,49 +1,157 @@
-require 'faker'
+# This file should ensure the existence of records required to run the application in every environment (production,
+# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
+# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
+#
+# Example:
+#
+#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
+#     MovieGenre.find_or_create_by!(name: genre_name)
+#   end
+roles = Role.create([
+    {
+        name: "Senior Officer",
+        description: "Senior Officer audit the cases."
+    },
+    {
+        name: "Officer",
+        description: "Officer responds the customers"
+    }
+])
 
-# Clear existing data
-Employee.delete_all
-ChatTranscript.delete_all
+employees = Employee.create([
+    {
+        name: "Calvin",
+        email: "calvin@gmail.com",
+        contact_no: "+6533333333",
+        role: roles.first
+    },
+    {
+        name: "Daniel",
+        email: "daniel@gmail.com",
+        contact_no: "+6534343434",
+        role: roles.first
+    },
+    {
+        name: "Theo",
+        email: "theo@gmail.com",
+        contact_no: "+6557565656",
+        role: roles.second
+    },
+    {
+        name: "Gethin",
+        email: "gethin@gmail.com",
+        contact_no: "+6587878459",
+        role: roles.second
+    }
+])
 
-# Seed Employees
-1000.times do
-  role = ['Senior Officer', 'Agent'].sample
-  begin
-    Employee.create!(
-      first_name: Faker::Name.first_name,
-      last_name: Faker::Name.last_name,
-      email: Faker::Internet.unique.email, # Ensure unique email addresses
-      contact_number: Faker::Number.leading_zero_number(digits: 10),
-      address: Faker::Address.street_address,
-      pincode: Faker::Address.zip_code,
-      city: Faker::Address.city,
-      state: Faker::Address.state,
-      date_of_birth: Faker::Date.birthday(min_age: 18, max_age: 65),
-      date_of_hiring: Faker::Date.between(from: 5.years.ago, to: Date.today), 
-      role: role
-    )
-    # puts "Created employee with role: #{role}"
-  rescue ActiveRecord::RecordInvalid => e
-    puts "Skipping duplicate record: #{e.record.email}"
-    retry # Retry with a new unique email if a duplicate is found
-  end
-end
+users = User.create([
+    {
+        username: "calvin@gmail.com",
+        password: "123456",
+        employee: employees.first
+    },
+    {
+        username: "daniel@gmail.com",
+        password: "123456",
+        employee: employees.second
+    }
+])
 
-puts "1000 employees created successfully."
+cases = Case.create([
+    {
+        messagingSection: "M23445453",
+        phoneNumber: "+6523434534",
+        topic: "MediSave",
+        status: 2,
+        employee: employees.third
+    },
+    {
+        messagingSection: "M34343344",
+        phoneNumber: "+6534989973",
+        topic: "MediSave",
+        status: 0,
+        employee: employees.fourth
+    }
+])
 
-# Seed Chat Transcripts
-50.times do
-  ChatTranscript.create!(
-    messaging_session_id: Faker::Alphanumeric.alphanumeric(number: 10),
-    case_id: Faker::Alphanumeric.alphanumeric(number: 10),
-    assigned_queue_name: Faker::Company.industry,
-    assigned_officer: Faker::Name.name,
-    messaging_user: Faker::Internet.username,
-    mop_phone_number: Faker::PhoneNumber.cell_phone,
-    message: Faker::Lorem.paragraph(sentence_count: 3),
-    short_url: Faker::Internet.url,
-    attachment: Faker::File.file_name(dir: 'path/to'),
-    time: Faker::Time.backward(days: 30, period: :all)
-  )
-end
+chat_transcript = ChatTranscript.create([
+    {
+        messagingUser: "Mr.Lim",
+        message: "Hello",
+        case: cases.first
+    },
+    {
+        messagingUser: "Officer",
+        message: "Hello, I am CPF officer. How can I help you?",
+        case: cases.first
+    },
+    {
+        messagingUser: "Mr.Lim",
+        message: "I would like to enquiry about the Medi Save. What is MediSave.",
+        case: cases.first
+    },
+    {
+        messagingUser: "Officer",
+        message: "Oh. Yes. It is your personal healthcare savings acount.When you’re working, you save between 8% and 10.5% of your monthly salary in your MediSave.This helps you pay for your healthcare expenses over your lifetime, especially when you retire and no longer have a regular income.",
+        case: cases.first
+    },
+    {
+        messagingUser: "Mr.Lim",
+        message: "Oh. Ok. Thanks. That's all.",
+        case: cases.first
+    },
+    {
+        messagingUser: "Officer",
+        message: "Your are welcome.",
+        case: cases.first
+    },
+    {
+        messagingUser: "Ms.Boey",
+        message: "Hello",
+        case: cases.second
+    },
+    {
+        messagingUser: "Officer",
+        message: "Hello, I am CPF officer. How can I help you?",
+        case: cases.second
+    },
+    {
+        messagingUser: "Ms.Boey",
+        message: "I would like to enquiry about theBasic Healthcare Sum. What is Basic Healthcare Sum.",
+        case: cases.second
+    },
+    {
+        messagingUser: "Officer",
+        message: "our BHS is the estimated amount of savings you need for basic subsidised healthcare expenses in old age. It is the maximum amount you can have in your MediSave.Your BHS is adjusted yearly until you reach the age of 65 and will remain fixed for the rest of your life.",
+        case: cases.second
+    },
+    {
+        messagingUser: "Ms.Boey",
+        message: "Oh. Ok. Thanks. That's all.",
+        case: cases.second
+    },
+    {
+        messagingUser: "Officer",
+        message: "Your are welcome.",
+        case: cases.second
+    }
+])
 
-puts "50 chat transcripts created successfully."
+ai_audited_scores = AiAuditedScore.create([
+    {
+        aiScore1: true,
+        aiScore2: true,
+        aiScore3: true,
+        aiScore4: true,
+        aiScore5: false,
+        aiScore6: true,
+        aiScore7: false,
+        aiScore8: true,
+        aiScore9: true,
+        aiFeedback: "Some Comments are here!!!!",
+        totalScore: 80,
+        isMadeCorrection: false,
+        case: cases.first
+    } 
+])

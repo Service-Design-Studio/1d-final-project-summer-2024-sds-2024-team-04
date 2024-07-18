@@ -1,4 +1,6 @@
-class EmployeeSerializer < ActiveModel::Serializer
-  attributes :id, :first_name, :last_name, :email, :contact_number, :address, :pincode,
-             :city, :state, :date_of_birth, :date_of_hiring, :created_at, :updated_at, :full_name, :age, :role
+class EmployeeSerializer
+  include FastJsonapi::ObjectSerializer
+  attributes :name, :email, :contact_no, :role_id
+
+  has_one :user
 end

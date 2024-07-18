@@ -1,0 +1,128 @@
+.case_container{
+    display: flex;
+    background: rgb(33, 33, 33) !important;
+    color: rgb(245, 245, 245);
+    text-align: center;
+    width: 100vw !important;
+    height: 100vh !important;
+    align-items:center !important;
+    flex-direction: column;
+    padding: 0px  !important;
+    margin: 0px !important;
+    overflow:  hidden !important;
+    padding-top: 30px !important;
+    padding-bottom: 30px;
+}
+
+
+.case-card{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 97%;
+    border-radius: 10px;
+    background-color: #3D3E3E;
+    color: whitesmoke;
+    margin-bottom: 25px;
+    padding: 5px;
+}
+
+.case-info-card{
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    width: 100%;
+    border-bottom: 1px solid rgba(211, 211, 211, 0.3);
+}
+
+.result-card{
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    width: 100%;
+    overflow: hidden scroll ;
+}
+
+.result-wrap{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 5px ;
+}
+
+.feedback-wrap{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 5px ;
+    text-align: left;
+}
+
+.result{
+    width: 150px;
+    text-align: left;
+}
+
+.info-wrap{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-content: center;    
+}
+
+.info {
+    width: 30%;
+    text-align: left;
+    margin: 5px;
+}
+
+.case-text-one{
+    font-size: 18px;
+    padding: 5px;
+}
+
+.case-text-two{
+    font-size: 32px;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.case-text-three{
+    font-size: 11px;
+    padding: 5px;
+}
+
+.case-col-wrap{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 97% !important;
+}
+
+.case-col{
+    display: flex;
+    padding: 30px;
+    align-items: flex-start;
+    flex-direction: column;
+    height: 97% !important;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.result-card::-webkit-scrollbar {
+display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.result-card {
+-ms-overflow-style: none;  /* IE and Edge */
+scrollbar-width: none;  /* Firefox */
+}
+
+
+@media (max-width: 768px) {
+    .case_container{
+        min-height:  -webkit-fill-available !important;
+    }
+    
+}

@@ -4,8 +4,6 @@
 # instead of editing this one. Cucumber will automatically load all features/**/*.rb
 # files.
 
-require 'rspec/expectations'
-World(RSpec::Matchers)
 
 require 'cucumber/rails'
 
@@ -28,20 +26,11 @@ ActionController::Base.allow_rescue = false
 
 # Remove/comment out the lines below if your app doesn't have a database.
 # For some databases (like MongoDB and CouchDB) you may need to use :truncation instead.
-require 'cucumber/rails'
-
-# Capybara settings
-Capybara.default_selector = :css
-
-# Database Cleaner settings
 begin
   DatabaseCleaner.strategy = :transaction
-  DatabaseCleaner.clean_with(:truncation)
 rescue NameError
-  raise "You need to add database_cleaner-active_record to your Gemfile (in the :test group) if you wish to use it."
+  raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
 end
-
-Cucumber::Rails::Database.javascript_strategy = :truncation
 
 # You may also want to configure DatabaseCleaner to use different strategies for certain features and scenarios.
 # See the DatabaseCleaner documentation for details. Example:
