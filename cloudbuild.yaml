@@ -1,0 +1,63 @@
+# [START cloudrun_rails_cloudbuild]
+steps:
+  - id: "build image"
+    name: "gcr.io/cloud-builders/docker"
+    entrypoint: 'bash'
+    args: ["-c", "docker build --build-arg MASTER_KEY=$$RAILS_MASTER_KEY -t gcr.io/${_PROJECT_ID}/${_SERVICE_NAME} . "]
+    secretEnv: ["RAILS_MASTER_KEY"]
+
+  - id: "push image"
+    name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/${_PROJECT_ID}/${_SERVICE_NAME}"]
+
+
+  - id: "apply migrations"
+    name: "gcr.io/google-appengine/exec-wrapper"
+    entrypoint: "bash"
+    args:
+      [
+        "-c",
+        # "source /workspace/.env && /buildstep/execute.sh -i gcr.io/${_PROJECT_ID}/${_SERVICE_NAME} -s ${_PROJECT_ID}:${_REGION}:${_INSTANCE_NAME} -e RAILS_MASTER_KEY=$$RAILS_MASTER_KEY -- bundle exec rake db:migrate"
+        "/buildstep/execute.sh -i gcr.io/${_PROJECT_ID}/${_SERVICE_NAME} -s ${_PROJECT_ID}:${_REGION}:${_INSTANCE_NAME} -e RAILS_MASTER_KEY=$$RAILS_MASTER_KEY -- bundle exec rake db:migrate"
+      ]
+    secretEnv: ["RAILS_MASTER_KEY"]
+  
+  # - id: "seed database"
+  #   name: "gcr.io/google-appengine/exec-wrapper"
+  #   entrypoint: "bash"
+  #   args:
+  #     [
+  #       "-c",
+  #       "/buildstep/execute.sh -i gcr.io/${_PROJECT_ID}/${_SERVICE_NAME} -s ${_PROJECT_ID}:${_REGION}:${_INSTANCE_NAME} -- bundle exec rake db:seed"
+  #     ]
+  #   secretEnv: ["RAILS_MASTER_KEY"]
+
+  - id: "run deploy"
+    name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      [
+        "run", "deploy",
+        "${_SERVICE_NAME}",
+        "--platform", "managed",
+        "--region", "${_REGION}",
+        "--image", "gcr.io/${_PROJECT_ID}/${_SERVICE_NAME}",
+        "--add-cloudsql-instances", "${_INSTANCE_NAME}",
+        "--update-secrets=RAILS_MASTER_KEY=${_SECRET_NAME}:latest"
+      ]
+
+substitutions:
+  _REGION: "asia-southeast1"
+  _PROJECT_ID: "sds-cpf"
+  _SERVICE_NAME: "sds-cpf-audit"
+  _INSTANCE_NAME: "<cloudsql instance name its a format project:region:instance>"
+  _SECRET_NAME: 'rails_production_secret'
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/${_PROJECT_ID}/secrets/${_SECRET_NAME}/versions/latest
+    env: RAILS_MASTER_KEY
+
+images:
+  - "gcr.io/${_PROJECT_ID}/${_SERVICE_NAME}"
+# [END cloudrun_rails_cloudbuild]
