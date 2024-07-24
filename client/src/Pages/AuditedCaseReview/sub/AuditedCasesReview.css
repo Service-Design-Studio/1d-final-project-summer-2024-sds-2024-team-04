@@ -119,6 +119,12 @@ display: none;
 scrollbar-width: none;  /* Firefox */
 }
 
+.btn-override{
+    display: flex;
+    width: max-content;  
+    align-self: center;  
+}
+
 
 @media (max-width: 768px) {
     .case_container{

@@ -55,7 +55,7 @@ const Dashboard = () => {
         fetch("http://127.0.0.1:3000/api/v1/cases", requestOptions)
             .then((respnse) => respnse.json())
             .then((response) => {
-                console.log(JSON.stringify(response))
+                //console.log(JSON.stringify(response))
                 setUnauditedCases([])
                 setAuditedCases([])
                 setCases(response.data)
@@ -180,7 +180,7 @@ const Dashboard = () => {
         
         <div className='dash-col-wrap'>
             <Col className='dash-col'>
-            <div className='dash-card-four'>
+                {/* <div className='dash-card-four'>
                     <div className='dash-text-one'>Unaudited cases</div>
                     <div className='dash-case-title-warp'>
                         <div style={{ width: "5%"}}>ID</div>
@@ -195,7 +195,7 @@ const Dashboard = () => {
                             unAuditedCasecardList.length > 0 ? unAuditedCasecardList : <div>No Unaudited case</div>
                         }
                     </>
-                </div>
+                </div> */}
                 <div className='dash-card-four'>
                     <div className='dash-text-one'>Recent Audits</div>
                     <div className='dash-case-title-warp'>
