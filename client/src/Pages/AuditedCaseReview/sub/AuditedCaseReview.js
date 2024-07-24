@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react'
 
 import { Row, Button, Alert, Col } from 'react-bootstrap'
-import Form from 'react-bootstrap/Form'
+import OverrideModal from './components/OverrideModal'
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 import { useNavigate, useParams } from 'react-router-dom'
 
 import './AuditedCasesReview.css'
@@ -14,19 +16,39 @@ export default function AuditedCaseReview() {
     const [cases, setCase] = useState(null)
     const [employee, setEmployee] = useState(null)
     const [aiAuditedScore, setAiAuditedScore] = useState(null)
+    const [chatTranscript, setChatTranscript] = useState([])
+    const [modalShow, setModalShow] = useState(false)
+    const [editScore, setEditScore] = useState(null)
 
     useEffect(() => {
         getCase();
     },[])
 
     useEffect(() => {
+        if(aiAuditedScore !== null){
+            setEditScore(aiAuditedScore.attributes)
+        }
+    },[aiAuditedScore])
+
+    useEffect(() => {
+        console.log(chatTranscript.length)
+    },[chatTranscript])
+
+    useEffect( () => {
         if(cases !== null){
             getEmployee()
             if(cases.relationships.ai_audited_score.data !== null){
                 getAiAuditedScore()
             }
+            setChatTranscript([])
+            // cases.relationships.chat_transcript.data.forEach(chat => {
+            //     getTranscript(chat.id)
+            // });
+            getTranscript()
         }
     },[cases])
+
+    
 
     const getCase = () => {
         setIsLoading(true);
@@ -46,6 +68,43 @@ export default function AuditedCaseReview() {
                 console.log("Unable to fetch cases!")
                 setIsLoading(true)
             })
+    }
+
+    const handleEditScore = (id, value) => {
+        var tempEditScore = editScore
+        if(id == 1) {
+            tempEditScore.aiScore1 = value
+        }
+        setEditScore(tempEditScore)
+    }
+
+    const getTranscript = async() => {
+        var tempTrasncript = []
+        setIsLoading(true);
+        const requestOptions = {
+            method: "GET",
+            redirect: "follow"
+        };
+
+        for( const chat of cases.relationships.chat_transcript.data){
+            const response = await fetch(`http://127.0.0.1:3000/api/v1/chat_transcripts/${chat.id}`, requestOptions)
+            const responseJson = await response.json()
+            tempTrasncript.push(responseJson.data)
+            // setChatTranscript(transcript => [...transcript, responseJson.data])
+        }
+        setChatTranscript(tempTrasncript)
+
+        // fetch(`http://127.0.0.1:3000/api/v1/chat_transcripts/${id}`, requestOptions)
+        //     .then((respnse) => respnse.json())
+        //     .then((response) => {
+        //         console.log(JSON.stringify(response))
+        //         setChatTranscript(transcript => [...transcript, response.data])
+                
+        //     })
+        //     .catch(() => {
+        //         console.log("Unable to fetch cases!")
+        //         setIsLoading(true)
+        //     })
     }
 
     const getAiAuditedScore = () => {
@@ -88,6 +147,12 @@ export default function AuditedCaseReview() {
             })
     }
 
+    const chatTranscriptList = chatTranscript.map((item, index) =>
+        <div style={{width: '100%', textAlign: 'left', margin: '5px'}}>
+            {`${item.attributes.messagingUser} : ${item.attributes.message}`}
+        </div>
+    )
+
   return (
     <div className='case_container'>
         <h2 style={{marginBottom: '20px'}}>Case Review</h2>
@@ -97,7 +162,8 @@ export default function AuditedCaseReview() {
             <div className='case-col-wrap'>
                 <Col className='case-col'>
                     <div className='case-card'>
-                        <h5>Chat Transcript</h5>      
+                        <h5>Chat Transcript</h5>
+                        { chatTranscript.length > 0 ? chatTranscriptList : <div>No Chat Transcript!</div>}      
                     </div>  
                 </Col>
                 <Col className='case-col'>
@@ -166,15 +232,214 @@ export default function AuditedCaseReview() {
                                         <div style={{fontWeight: 'bold', fontSize: '18px'}}>Comment</div>
                                         <p >Some comments are here !!!</p>
                                     </div>
+                                    <Button className='btn-override' onClick={() => setModalShow(true)}>Override Result</Button>
                                 </>:
                                 <div>No audited result!</div>
                             }
-                            
                         </div>
                     </div>
                 </Col>
             </div> 
         }
+        {/* <OverrideModal
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            aiScore={aiAuditedScore == null ? null : aiAuditedScore.attributes}
+         /> */}
+         <Modal
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+            scrollable
+            >
+            {/* <Modal.Header closeButton>
+                <Modal.Title id="contained-modal-title-vcenter">
+                Modal heading
+                </Modal.Title>
+            </Modal.Header> */}
+            <Modal.Body 
+            >
+                <h5>Edit Audit Result</h5>
+                <br></br>
+                {
+                    editScore !== null &&
+                    <div>
+                    <div className='radio-wrap'>
+                        <div style={{width: '15%'}}>Cirteria1</div>
+                        <div style={{width: '15%'}}>
+                            <input
+                                type="radio"
+                                checked={editScore.aiScore1}
+                                onChange={() => {
+                                    handleEditScore(1,true)
+                                }}
+                            /> Satisfy
+                        </div>
+                        <div style={{width: '15%'}}>
+                            <input
+                                type="radio"
+                                checked={!editScore.aiScore1}
+                                onChange={() => {
+                                    handleEditScore(1, false)
+                                }}
+                            /> Unsatisfy
+                        </div>
+                    </div>
+                    <div className='radio-wrap'>
+                        <div style={{width: '15%'}}>Cirteria2</div>
+                        <div style={{width: '15%'}}>
+                            <input
+                                type="radio"
+                                checked={editScore.aiScore2}
+                                onChange={() => console.log("Something")}
+                            /> Satisfy
+                        </div>
+                        <div style={{width: '15%'}}>
+                            <input
+                                type="radio"
+                                checked={!editScore.aiScore2}
+                                onChange={() => console.log("Something")}
+                            /> Unsatisfy
+                        </div>
+                    </div>
+                    <div className='radio-wrap'>
+                        <div style={{width: '15%'}}>Cirteria3</div>
+                        <div style={{width: '15%'}}>
+                            <input
+                                type="radio"
+                                checked={editScore.aiScore3}
+                                onChange={() => console.log("Something")}
+                            /> Satisfy
+                        </div>
+                        <div style={{width: '15%'}}>
+                            <input
+                                type="radio"
+                                checked={!editScore.aiScore3}
+                                onChange={() => console.log("Something")}
+                            /> Unsatisfy
+                        </div>
+                    </div>
+                    <div className='radio-wrap'>
+                        <div style={{width: '15%'}}>Cirteria4</div>
+                        <div style={{width: '15%'}}>
+                            <input
+                                type="radio"
+                                checked={editScore.aiScore4}
+                                onChange={() => console.log("Something")}
+                            /> Satisfy
+                        </div>
+                        <div style={{width: '15%'}}>
+                            <input
+                                type="radio"
+                                checked={!editScore.aiScore4}
+                                onChange={() => console.log("Something")}
+                            /> Unsatisfy
+                        </div>
+                    </div>
+                    <div className='radio-wrap'>
+                        <div style={{width: '15%'}}>Cirteria5</div>
+                        <div style={{width: '15%'}}>
+                            <input
+                                type="radio"
+                                checked={editScore.aiScore5}
+                                onChange={() => console.log("Something")}
+                            /> Satisfy
+                        </div>
+                        <div style={{width: '15%'}}>
+                            <input
+                                type="radio"
+                                checked={!editScore.aiScore5}
+                                onChange={() => console.log("Something")}
+                            /> Unsatisfy
+                        </div>
+                    </div>
+                    <div className='radio-wrap'>
+                        <div style={{width: '15%'}}>Cirteria6</div>
+                        <div style={{width: '15%'}}>
+                            <input
+                                type="radio"
+                                checked={editScore.aiScore6}
+                                onChange={() => console.log("Something")}
+                            /> Satisfy
+                        </div>
+                        <div style={{width: '15%'}}>
+                            <input
+                                type="radio"
+                                checked={!editScore.aiScore6}
+                                onChange={() => console.log("Something")}
+                            /> Unsatisfy
+                        </div>
+                    </div>
+                    <div className='radio-wrap'>
+                        <div style={{width: '15%'}}>Cirteria7</div>
+                        <div style={{width: '15%'}}>
+                            <input
+                                type="radio"
+                                checked={editScore.aiScore7}
+                                onChange={() => console.log("Something")}
+                            /> Satisfy
+                        </div>
+                        <div style={{width: '15%'}}>
+                            <input
+                                type="radio"
+                                checked={!editScore.aiScore7}
+                                onChange={() => console.log("Something")}
+                            /> Unsatisfy
+                        </div>
+                    </div>
+                    <div className='radio-wrap'>
+                        <div style={{width: '15%'}}>Cirteria8</div>
+                        <div style={{width: '15%'}}>
+                            <input
+                                type="radio"
+                                checked={editScore.aiScore8}
+                                onChange={() => console.log("Something")}
+                            /> Satisfy
+                        </div>
+                        <div style={{width: '15%'}}>
+                            <input
+                                type="radio"
+                                checked={!editScore.aiScore8}
+                                onChange={() => console.log("Something")}
+                            /> Unsatisfy
+                        </div>
+                    </div>
+                    <div className='radio-wrap'>
+                        <div style={{width: '15%'}}>Cirteria9</div>
+                        <div style={{width: '15%'}}>
+                            <input
+                                type="radio"
+                                checked={editScore.aiScore9}
+                                onChange={() => console.log("Something")}
+                            /> Satisfy
+                        </div>
+                        <div style={{width: '15%'}}>
+                            <input
+                                type="radio"
+                                checked={!editScore.aiScore9}
+                                onChange={() => console.log("Something")}
+                            /> Unsatisfy
+                        </div>
+                    </div>
+                    <div className='radio-wrap'>
+                        <div style={{width: '15%'}}>Total:</div>
+                        <Form.Control type="number" style={{width: '30%'}} value={editScore.totalScore} />
+                    </div>
+                    <div className='comment-wrap'>
+                        <div style={{width: '15%'}}>Comment:</div>
+                        <Form.Control as="textarea" rows={3} style={{width: '100%'}} value={`Some comments are here!`}/>
+                    </div>
+                </div>
+                }
+                
+            </Modal.Body>
+            <Modal.Footer>
+                <Button onClick={() => setModalShow(false)}>Submit</Button>
+                <Button onClick={() => setModalShow(false)}>Close</Button>
+            </Modal.Footer>
+            </Modal>
     </div>
   )
 }
