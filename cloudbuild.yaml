@@ -42,16 +42,16 @@ steps:
         "--platform", "managed",
         "--region", "${_REGION}",
         "--image", "gcr.io/${_PROJECT_ID}/${_SERVICE_NAME}",
-        "--add-cloudsql-instances", "${_INSTANCE_NAME}",
+        "--add-cloudsql-instances", "${_PROJECT_ID}:${_REGION}:${_INSTANCE_NAME}",
         "--update-secrets=RAILS_MASTER_KEY=${_SECRET_NAME}:latest"
       ]
 
 substitutions:
   _REGION: "asia-southeast1"
-  _PROJECT_ID: "sds-cpf"
+  _PROJECT_ID: "sds-cpf-429016"
   _SERVICE_NAME: "sds-cpf-audit"
-  _INSTANCE_NAME: "<cloudsql instance name its a format project:region:instance>"
-  _SECRET_NAME: 'rails_production_secret'
+  _INSTANCE_NAME: "sds-cpf-sql"
+  _SECRET_NAME: 'sds-cpf-audit'
 
 availableSecrets:
   secretManager:

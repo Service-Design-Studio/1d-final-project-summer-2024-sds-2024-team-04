@@ -41,6 +41,9 @@ RUN bundle install && \
 # Copy application code
 COPY . .
 
+# Ensure /rails/bin/rails and other scripts have execute permissions
+RUN chmod -R +x /rails/bin/*
+
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
