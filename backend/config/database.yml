@@ -87,6 +87,5 @@ production:
   database: "cpf_audit_production"
   username: "sds-cpf"
   password: "pKC=&v_I_<L#i*Qm"
-  # port: 5433
   # port: <%= ENV.fetch("DB_PORT") { 5432 }%>
   host: "/cloudsql/sds-cpf-429016:asia-southeast1:sds-cpf-sql"
