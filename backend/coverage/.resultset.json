@@ -1,7 +1,30 @@
 {
   "RSpec": {
     "coverage": {
-      "C:/Users/brian/Downloads/mk-cpf/app/channels/application_cable/channel.rb": {
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/models/user.rb": {
+        "lines": [
+          1,
+          1,
+          null
+        ]
+      },
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/models/application_record.rb": {
+        "lines": [
+          1,
+          1,
+          null
+        ]
+      },
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/models/employee.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/channels/application_cable/channel.rb": {
         "lines": [
           0,
           0,
@@ -11,7 +34,7 @@
         "branches": {
         }
       },
-      "C:/Users/brian/Downloads/mk-cpf/app/channels/application_cable/connection.rb": {
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/channels/application_cable/connection.rb": {
         "lines": [
           0,
           0,
@@ -21,67 +44,7 @@
         "branches": {
         }
       },
-      "C:/Users/brian/Downloads/mk-cpf/app/controllers/api/v1/ai_audited_scores_controller.rb": {
-        "lines": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          0,
-          0,
-          null,
-          0,
-          0,
-          null,
-          0,
-          0,
-          null,
-          0,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          0,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          0,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "branches": {
-        }
-      },
-      "C:/Users/brian/Downloads/mk-cpf/app/controllers/api/v1/cases_controller.rb": {
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/controllers/api/v1/ai_audited_scores_controller.rb": {
         "lines": [
           0,
           0,
@@ -141,7 +104,7 @@
         "branches": {
         }
       },
-      "C:/Users/brian/Downloads/mk-cpf/app/controllers/api/v1/chat_transcripts_controller.rb": {
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/controllers/api/v1/cases_controller.rb": {
         "lines": [
           0,
           0,
@@ -201,7 +164,7 @@
         "branches": {
         }
       },
-      "C:/Users/brian/Downloads/mk-cpf/app/controllers/api/v1/employees_controller.rb": {
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/controllers/api/v1/chat_transcripts_controller.rb": {
         "lines": [
           0,
           0,
@@ -261,7 +224,7 @@
         "branches": {
         }
       },
-      "C:/Users/brian/Downloads/mk-cpf/app/controllers/api/v1/roles_controller.rb": {
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/controllers/api/v1/employees_controller.rb": {
         "lines": [
           0,
           0,
@@ -321,7 +284,7 @@
         "branches": {
         }
       },
-      "C:/Users/brian/Downloads/mk-cpf/app/controllers/api/v1/users_controller.rb": {
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/controllers/api/v1/roles_controller.rb": {
         "lines": [
           0,
           0,
@@ -381,7 +344,71 @@
         "branches": {
         }
       },
-      "C:/Users/brian/Downloads/mk-cpf/app/controllers/application_controller.rb": {
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/controllers/api/v1/users_controller.rb": {
+        "lines": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          null,
+          0,
+          0,
+          null,
+          0,
+          0,
+          null,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          null,
+          0,
+          0,
+          null,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          null,
+          0,
+          0,
+          null,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          null,
+          0,
+          0,
+          null,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          null,
+          0,
+          null,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "branches": {
+        }
+      },
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/controllers/application_controller.rb": {
         "lines": [
           0,
           null,
@@ -391,8 +418,9 @@
         "branches": {
         }
       },
-      "C:/Users/brian/Downloads/mk-cpf/app/controllers/pages_controller.rb": {
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/controllers/pages_controller.rb": {
         "lines": [
+          0,
           0,
           0,
           0,
@@ -401,7 +429,7 @@
         "branches": {
         }
       },
-      "C:/Users/brian/Downloads/mk-cpf/app/models/ai_audited_score.rb": {
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/models/ai_audited_score.rb": {
         "lines": [
           0,
           0,
@@ -410,16 +438,7 @@
         "branches": {
         }
       },
-      "C:/Users/brian/Downloads/mk-cpf/app/models/application_record.rb": {
-        "lines": [
-          0,
-          0,
-          0
-        ],
-        "branches": {
-        }
-      },
-      "C:/Users/brian/Downloads/mk-cpf/app/models/case.rb": {
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/models/case.rb": {
         "lines": [
           0,
           0,
@@ -432,7 +451,7 @@
         "branches": {
         }
       },
-      "C:/Users/brian/Downloads/mk-cpf/app/models/chat_transcript.rb": {
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/models/chat_transcript.rb": {
         "lines": [
           0,
           0,
@@ -441,18 +460,7 @@
         "branches": {
         }
       },
-      "C:/Users/brian/Downloads/mk-cpf/app/models/employee.rb": {
-        "lines": [
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "branches": {
-        }
-      },
-      "C:/Users/brian/Downloads/mk-cpf/app/models/role.rb": {
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/models/role.rb": {
         "lines": [
           0,
           0,
@@ -461,16 +469,7 @@
         "branches": {
         }
       },
-      "C:/Users/brian/Downloads/mk-cpf/app/models/user.rb": {
-        "lines": [
-          0,
-          0,
-          0
-        ],
-        "branches": {
-        }
-      },
-      "C:/Users/brian/Downloads/mk-cpf/app/serializers/ai_audited_score_serializer.rb": {
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/serializers/ai_audited_score_serializer.rb": {
         "lines": [
           0,
           0,
@@ -480,7 +479,7 @@
         "branches": {
         }
       },
-      "C:/Users/brian/Downloads/mk-cpf/app/serializers/case_serializer.rb": {
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/serializers/case_serializer.rb": {
         "lines": [
           0,
           0,
@@ -493,7 +492,7 @@
         "branches": {
         }
       },
-      "C:/Users/brian/Downloads/mk-cpf/app/serializers/chat_transcript_serializer.rb": {
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/serializers/chat_transcript_serializer.rb": {
         "lines": [
           0,
           0,
@@ -503,19 +502,7 @@
         "branches": {
         }
       },
-      "C:/Users/brian/Downloads/mk-cpf/app/serializers/employee_serializer.rb": {
-        "lines": [
-          0,
-          0,
-          0,
-          null,
-          0,
-          0
-        ],
-        "branches": {
-        }
-      },
-      "C:/Users/brian/Downloads/mk-cpf/app/serializers/role_serializer.rb": {
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/serializers/employee_serializer.rb": {
         "lines": [
           0,
           0,
@@ -527,7 +514,19 @@
         "branches": {
         }
       },
-      "C:/Users/brian/Downloads/mk-cpf/app/serializers/user_serializer.rb": {
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/serializers/role_serializer.rb": {
+        "lines": [
+          0,
+          0,
+          0,
+          null,
+          0,
+          0
+        ],
+        "branches": {
+        }
+      },
+      "C:/Users/Chia Sian/Documents/GitHub/1d-final-project-summer-2024-sds-2024-team-04/backend/app/serializers/user_serializer.rb": {
         "lines": [
           0,
           0,
@@ -538,6 +537,6 @@
         }
       }
     },
-    "timestamp": 1721281521
+    "timestamp": 1721833003
   }
 }

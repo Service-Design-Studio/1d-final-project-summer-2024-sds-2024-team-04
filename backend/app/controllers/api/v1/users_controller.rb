@@ -11,16 +11,20 @@ module Api
             def show
                 user = User.find_by(id: params[:id])
                 
-                render json: UserSerializer.new(user).serialized_json
+                if user
+                    render json: UserSerializer.new(user).serialized_json
+                else
+                    render json: { error: 'User not found' }, status: :not_found
+                end
             end
 
             def create
-                user = user.new(user_params)
+                user = User.new(user_params)
 
                 if user.save
                     render json: UserSerializer.new(user).serialized_json
                 else
-                    render json: {error: user.errors.message}, status: 422
+                    render json: {error: user.errors.full_messages}, status: 422
                 end
             end
 

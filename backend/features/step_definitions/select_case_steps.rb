@@ -1,5 +1,5 @@
 Given('I am on the dashboard page') do
-    visit '/dashboard'  
+    visit 'http://localhost:3001/dashboard'  
   end
   
   When('I click the case with ID {string}') do |case_id|

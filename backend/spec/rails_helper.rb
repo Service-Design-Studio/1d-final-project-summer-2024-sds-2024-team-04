@@ -6,7 +6,15 @@ require_relative '../config/environment'
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
+require 'capybara/rspec'
+require 'selenium-webdriver'
 # Add additional requires below this line. Rails is not loaded until this point!
+Capybara.configure do |config|
+  config.run_server = false
+  config.app_host = 'http://localhost:3001' # This is your React frontend
+end
+
+Capybara.javascript_driver = :selenium_chrome # Or :selenium_chrome_headless for headless mode
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
