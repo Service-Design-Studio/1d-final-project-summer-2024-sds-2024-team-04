@@ -19,6 +19,7 @@ export default function AuditedCaseReview() {
     const [chatTranscript, setChatTranscript] = useState([])
     const [modalShow, setModalShow] = useState(false)
     const [editScore, setEditScore] = useState(null)
+    const [comment, setComment] = useState('Some comments are here!')
 
     useEffect(() => {
         getCase();
@@ -68,14 +69,6 @@ export default function AuditedCaseReview() {
                 console.log("Unable to fetch cases!")
                 setIsLoading(true)
             })
-    }
-
-    const handleEditScore = (id, value) => {
-        var tempEditScore = editScore
-        if(id == 1) {
-            tempEditScore.aiScore1 = value
-        }
-        setEditScore(tempEditScore)
     }
 
     const getTranscript = async() => {
@@ -273,7 +266,7 @@ export default function AuditedCaseReview() {
                                 type="radio"
                                 checked={editScore.aiScore1}
                                 onChange={() => {
-                                    handleEditScore(1,true)
+                                    setEditScore((scores) => ({ ...scores, aiScore1: true }))
                                 }}
                             /> Satisfy
                         </div>
@@ -282,7 +275,7 @@ export default function AuditedCaseReview() {
                                 type="radio"
                                 checked={!editScore.aiScore1}
                                 onChange={() => {
-                                    handleEditScore(1, false)
+                                    setEditScore((scores) => ({ ...scores, aiScore1: false }))
                                 }}
                             /> Unsatisfy
                         </div>
@@ -293,14 +286,14 @@ export default function AuditedCaseReview() {
                             <input
                                 type="radio"
                                 checked={editScore.aiScore2}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore2: true }))}
                             /> Satisfy
                         </div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={!editScore.aiScore2}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore2: false }))}
                             /> Unsatisfy
                         </div>
                     </div>
@@ -310,14 +303,14 @@ export default function AuditedCaseReview() {
                             <input
                                 type="radio"
                                 checked={editScore.aiScore3}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore3: true }))}
                             /> Satisfy
                         </div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={!editScore.aiScore3}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore3: false }))}
                             /> Unsatisfy
                         </div>
                     </div>
@@ -327,14 +320,14 @@ export default function AuditedCaseReview() {
                             <input
                                 type="radio"
                                 checked={editScore.aiScore4}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore4: true }))}
                             /> Satisfy
                         </div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={!editScore.aiScore4}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore4: false }))}
                             /> Unsatisfy
                         </div>
                     </div>
@@ -344,14 +337,14 @@ export default function AuditedCaseReview() {
                             <input
                                 type="radio"
                                 checked={editScore.aiScore5}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore5: true }))}
                             /> Satisfy
                         </div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={!editScore.aiScore5}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore5: false }))}
                             /> Unsatisfy
                         </div>
                     </div>
@@ -361,14 +354,14 @@ export default function AuditedCaseReview() {
                             <input
                                 type="radio"
                                 checked={editScore.aiScore6}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore6: true }))}
                             /> Satisfy
                         </div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={!editScore.aiScore6}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore6: false }))}
                             /> Unsatisfy
                         </div>
                     </div>
@@ -378,14 +371,14 @@ export default function AuditedCaseReview() {
                             <input
                                 type="radio"
                                 checked={editScore.aiScore7}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore7: true }))}
                             /> Satisfy
                         </div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={!editScore.aiScore7}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore7: false }))}
                             /> Unsatisfy
                         </div>
                     </div>
@@ -395,14 +388,14 @@ export default function AuditedCaseReview() {
                             <input
                                 type="radio"
                                 checked={editScore.aiScore8}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore8: true }))}
                             /> Satisfy
                         </div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={!editScore.aiScore8}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore8: false }))}
                             /> Unsatisfy
                         </div>
                     </div>
@@ -412,24 +405,35 @@ export default function AuditedCaseReview() {
                             <input
                                 type="radio"
                                 checked={editScore.aiScore9}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore9: true }))}
                             /> Satisfy
                         </div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={!editScore.aiScore9}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore9: false }))}
                             /> Unsatisfy
                         </div>
                     </div>
                     <div className='radio-wrap'>
                         <div style={{width: '15%'}}>Total:</div>
-                        <Form.Control type="number" style={{width: '30%'}} value={editScore.totalScore} />
+                        <Form.Control 
+                            type="number" 
+                            style={{width: '30%'}} 
+                            value={editScore.totalScore} 
+                            onChange={(e) => setEditScore((scores) => ({ ...scores, totalScore: e.target.value }))}
+                        />
                     </div>
                     <div className='comment-wrap'>
                         <div style={{width: '15%'}}>Comment:</div>
-                        <Form.Control as="textarea" rows={3} style={{width: '100%'}} value={`Some comments are here!`}/>
+                        <Form.Control 
+                            as="textarea" 
+                            rows={3} 
+                            style={{width: '100%'}} 
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                        />
                     </div>
                 </div>
                 }
