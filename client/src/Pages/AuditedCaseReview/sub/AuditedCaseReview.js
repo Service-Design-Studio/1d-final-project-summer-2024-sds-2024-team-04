@@ -178,43 +178,43 @@ export default function AuditedCaseReview() {
                                 aiAuditedScore !== null ? 
                                 <>
                                     <div className='result-wrap'>
-                                        <div className='result' style={{fontWeight: 'bold'}}>Cirteria</div>
+                                        <div className='result' style={{fontWeight: 'bold'}}>Criteria</div>
                                         <div className='result' style={{fontWeight: 'bold'}}>Satisfy/Unsatisfy</div>
                                     </div>
                                     <div className='result-wrap'>
-                                        <div className='result'>Cirteria1</div>
+                                        <div className='result'>Criteria1</div>
                                         <div className='result'>{aiAuditedScore.attributes.aiScore1 === true ? `Satisfy` : `Unsatisfy`}</div>
                                     </div>
                                     <div className='result-wrap'>
-                                        <div className='result'>Cirteria2</div>
+                                        <div className='result'>Criteria2</div>
                                         <div className='result'>{aiAuditedScore.attributes.aiScore2 === true ? `Satisfy` : `Unsatisfy`}</div>
                                     </div>
                                     <div className='result-wrap'>
-                                        <div className='result'>Cirteria3</div>
+                                        <div className='result'>Criteria3</div>
                                         <div className='result'>{aiAuditedScore.attributes.aiScore3 === true ? `Satisfy` : `Unsatisfy`}</div>
                                     </div>
                                     <div className='result-wrap'>
-                                        <div className='result'>Cirteria4</div>
+                                        <div className='result'>Criteria4</div>
                                         <div className='result'>{aiAuditedScore.attributes.aiScore4 === true ? `Satisfy` : `Unsatisfy`}</div>
                                     </div>
                                     <div className='result-wrap'>
-                                        <div className='result'>Cirteria5</div>
+                                        <div className='result'>Criteria5</div>
                                         <div className='result'>{aiAuditedScore.attributes.aiScore5 === true ? `Satisfy` : `Unsatisfy`}</div>
                                     </div>
                                     <div className='result-wrap'>
-                                        <div className='result'>Cirteria6</div>
+                                        <div className='result'>Criteria6</div>
                                         <div className='result'>{aiAuditedScore.attributes.aiScore6 === true ? `Satisfy` : `Unsatisfy`}</div>
                                     </div>
                                     <div className='result-wrap'>
-                                        <div className='result'>Cirteria7</div>
+                                        <div className='result'>Criteria7</div>
                                         <div className='result'>{aiAuditedScore.attributes.aiScore7 === true ? `Satisfy` : `Unsatisfy`}</div>
                                     </div>
                                     <div className='result-wrap'>
-                                        <div className='result'>Cirteria8</div>
+                                        <div className='result'>Criteria8</div>
                                         <div className='result'>{aiAuditedScore.attributes.aiScore8 === true ? `Satisfy` : `Unsatisfy`}</div>
                                     </div>
                                     <div className='result-wrap'>
-                                        <div className='result'>Cirteria9</div>
+                                        <div className='result'>Criteria9</div>
                                         <div className='result'>{aiAuditedScore.attributes.aiScore9 === true ? `Satisfy` : `Unsatisfy`}</div>
                                     </div>
                                     <div className='result-wrap'>
@@ -260,7 +260,7 @@ export default function AuditedCaseReview() {
                     editScore !== null &&
                     <div>
                     <div className='radio-wrap'>
-                        <div style={{width: '15%'}}>Cirteria1</div>
+                        <div style={{width: '15%'}}>Criteria1</div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
@@ -281,7 +281,7 @@ export default function AuditedCaseReview() {
                         </div>
                     </div>
                     <div className='radio-wrap'>
-                        <div style={{width: '15%'}}>Cirteria2</div>
+                        <div style={{width: '15%'}}>Criteria2</div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
@@ -298,7 +298,7 @@ export default function AuditedCaseReview() {
                         </div>
                     </div>
                     <div className='radio-wrap'>
-                        <div style={{width: '15%'}}>Cirteria3</div>
+                        <div style={{width: '15%'}}>Criteria3</div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
@@ -315,7 +315,7 @@ export default function AuditedCaseReview() {
                         </div>
                     </div>
                     <div className='radio-wrap'>
-                        <div style={{width: '15%'}}>Cirteria4</div>
+                        <div style={{width: '15%'}}>Criteria4</div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
@@ -332,7 +332,7 @@ export default function AuditedCaseReview() {
                         </div>
                     </div>
                     <div className='radio-wrap'>
-                        <div style={{width: '15%'}}>Cirteria5</div>
+                        <div style={{width: '15%'}}>Criteria5</div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
@@ -349,7 +349,7 @@ export default function AuditedCaseReview() {
                         </div>
                     </div>
                     <div className='radio-wrap'>
-                        <div style={{width: '15%'}}>Cirteria6</div>
+                        <div style={{width: '15%'}}>Criteria6</div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
@@ -366,7 +366,7 @@ export default function AuditedCaseReview() {
                         </div>
                     </div>
                     <div className='radio-wrap'>
-                        <div style={{width: '15%'}}>Cirteria7</div>
+                        <div style={{width: '15%'}}>Criteria7</div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
@@ -383,7 +383,7 @@ export default function AuditedCaseReview() {
                         </div>
                     </div>
                     <div className='radio-wrap'>
-                        <div style={{width: '15%'}}>Cirteria8</div>
+                        <div style={{width: '15%'}}>Criteria8</div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
@@ -400,7 +400,7 @@ export default function AuditedCaseReview() {
                         </div>
                     </div>
                     <div className='radio-wrap'>
-                        <div style={{width: '15%'}}>Cirteria9</div>
+                        <div style={{width: '15%'}}>Criteria9</div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
