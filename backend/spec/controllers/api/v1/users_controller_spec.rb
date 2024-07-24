@@ -35,6 +35,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     it "returns not found for a non-existent user" do
       get :show, params: { id: 9999 }
       expect(response).to have_http_status(:not_found)
+      expect(response.body).to include('User not found')
     end
   end
 
@@ -158,15 +159,37 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
   describe 'DELETE #destroy' do
     context 'when the user exists' do
-      it 'destroys the requested user' do
-        expect {
+      context 'and destroy is successful' do
+        it 'destroys the requested user' do
+          expect {
+            delete :destroy, params: { id: user.id }
+          }.to change(User, :count).by(-1)
+        end
+
+        it 'returns a no content response' do
           delete :destroy, params: { id: user.id }
-        }.to change(User, :count).by(-1)
+          expect(response).to have_http_status(:no_content)
+        end
       end
 
-      it 'returns a no content response' do
-        delete :destroy, params: { id: user.id }
-        expect(response).to have_http_status(:no_content)
+      context 'and destroy fails' do
+        before do
+          # Simulate a failure in the destroy method
+          allow_any_instance_of(User).to receive(:destroy).and_return(false)
+          allow_any_instance_of(User).to receive_message_chain(:errors, :full_messages).and_return(['Failed to delete user'])
+        end
+
+        it 'does not destroy the user' do
+          expect {
+            delete :destroy, params: { id: user.id }
+          }.not_to change(User, :count)
+        end
+
+        it 'returns an unprocessable entity response' do
+          delete :destroy, params: { id: user.id }
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response.body).to include('Failed to delete user')
+        end
       end
     end
 

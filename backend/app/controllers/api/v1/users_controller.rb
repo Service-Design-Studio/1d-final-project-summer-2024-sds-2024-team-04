@@ -48,7 +48,7 @@ module Api
                 elsif user.destroy
                     head :no_content
                 else
-                    render json: {error: user.errors.message}, status: 422
+                    render json: {error: user.errors.full_messages}, status: 422
                 end
             end
 
