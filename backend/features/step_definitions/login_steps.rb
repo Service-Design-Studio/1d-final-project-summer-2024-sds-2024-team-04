@@ -4,7 +4,7 @@ Given('a user with email {string} and password {string} exists') do |email, pass
   end
   
   Given('I am on the login page') do
-    visit 'http://localhost:3001/login'
+    visit 'https://sds-cpf-frontend-kr3vrf23oq-as.a.run.app/login'
     expect(page).to have_button('Login')  # Verify that the button with text 'Login' is present on the page
   end
   

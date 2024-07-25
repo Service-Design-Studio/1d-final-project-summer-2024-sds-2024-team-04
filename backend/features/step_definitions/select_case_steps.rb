@@ -1,5 +1,5 @@
 Given('I am on the dashboard page') do
-    visit 'http://localhost:3001/dashboard'  
+    visit 'https://sds-cpf-frontend-kr3vrf23oq-as.a.run.app/dashboard'  
   end
   
   When('I click the case with ID {string}') do |case_id|

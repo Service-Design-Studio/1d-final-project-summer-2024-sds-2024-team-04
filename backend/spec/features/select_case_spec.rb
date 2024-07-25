@@ -9,7 +9,7 @@ RSpec.feature 'select_case', type: :feature, js: true do
 
   scenario 'Navigating to the case review page' do
     # Visit the dashboard page
-    visit 'http://localhost:3001/dashboard'
+    visit 'https://sds-cpf-frontend-kr3vrf23oq-as.a.run.app/dashboard'
     expect(page).to have_current_path('/dashboard')
 
     # Click on the case with the specified ID

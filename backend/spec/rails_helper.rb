@@ -11,7 +11,7 @@ require 'selenium-webdriver'
 # Add additional requires below this line. Rails is not loaded until this point!
 Capybara.configure do |config|
   config.run_server = false
-  config.app_host = 'http://localhost:3001' # This is your React frontend
+  config.app_host = 'https://sds-cpf-frontend-kr3vrf23oq-as.a.run.app' # This is your React frontend
 end
 
 Capybara.javascript_driver = :selenium_chrome # Or :selenium_chrome_headless for headless mode

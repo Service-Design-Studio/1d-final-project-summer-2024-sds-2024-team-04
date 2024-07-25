@@ -10,7 +10,7 @@ RSpec.feature 'Login', type: :feature, js: true do
 
   scenario 'Successful login with valid credentials' do
     # Visit the login page
-    visit '/login' # Capybara is configured to use http://localhost:3001
+    visit '/login' # Capybara is configured to use https://sds-cpf-frontend-kr3vrf23oq-as.a.run.app
     save_and_open_page # This should show the React login page if everything is correct
     expect(page).to have_button('Login')
 
@@ -27,7 +27,7 @@ RSpec.feature 'Login', type: :feature, js: true do
 
   scenario 'Unsuccessful login with invalid credentials' do
     # Visit the login page
-    visit 'http://localhost:3001/login'
+    visit 'https://sds-cpf-frontend-kr3vrf23oq-as.a.run.app/login'
 
     # Fill in the form fields with invalid credentials
     fill_in 'Username', with: 'wrongemail@example.com'
