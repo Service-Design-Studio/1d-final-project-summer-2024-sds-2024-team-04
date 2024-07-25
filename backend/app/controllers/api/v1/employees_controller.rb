@@ -11,7 +11,11 @@ module Api
             def show
                 employee = Employee.find_by(id: params[:id])
                 
-                render json: EmployeeSerializer.new(employee).serialized_json
+                if employee
+                    render json: EmployeeSerializer.new(employee).serialized_json
+                else
+                    render json: { error: 'Employee not found' }, status: :not_found
+                end
             end
 
             def create
@@ -20,7 +24,7 @@ module Api
                 if employee.save
                     render json: EmployeeSerializer.new(employee).serialized_json
                 else
-                    render json: {error: employee.errors.message}, status: 422
+                    render json: {error: employee.errors.full_messages}, status: 422
                 end
             end
 
@@ -30,17 +34,21 @@ module Api
                 if employee.update(employee_params)
                     render json: EmployeeSerializer.new(employee).serialized_json
                 else
-                    render json: {error: employee.errors.message}, status: 422
+                    render json: {error: employee.errors.full_messages}, status: 422
                 end
             end
 
             def destroy
                 employee = Employee.find_by(id: params[:id])
 
-                if employee.destroy
-                    head :no_content
+                if employee
+                    if employee.destroy
+                        head :no_content
+                    else
+                        render json: { error: employee.errors.full_messages }, status: 422
+                    end
                 else
-                    render json: {error: employee.errors.message}, status: 422
+                    render json: { error: 'Employee not found' }, status: :not_found
                 end
             end
 
