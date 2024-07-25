@@ -1,17 +1,11 @@
 Given('a user with email {string} and password {string} exists') do |email, password|
     # Using the API to create the user
-    user_params = {
-      user: {
-        username: email,
-        password: password,
-        employee_id: 'E12345'
-      }
-    }
-    page.driver.post '/api/v1/users', user_params
+    User.create(username: email, password: password, employee_id: 'E12345')
   end
   
   Given('I am on the login page') do
-    visit new_user_session_path
+    visit 'https://sds-cpf-frontend-kr3vrf23oq-as.a.run.app/login'
+    expect(page).to have_button('Login')  # Verify that the button with text 'Login' is present on the page
   end
   
   When('I fill in {string} with {string}') do |field, value|
@@ -22,7 +16,10 @@ Given('a user with email {string} and password {string} exists') do |email, pass
     click_button button
   end
   
-  Then('I should see {string}') do |message|
-    expect(page).to have_content(message)
+  Then('I should see a Dashboard') do
+    expect(page).to have_content('Dashboard')
   end
   
+  Then('I should see an error message') do
+    expect(page).to have_content('Wrong Username and Password. Try again !')
+  end
