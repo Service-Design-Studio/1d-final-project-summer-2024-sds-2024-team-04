@@ -11,43 +11,50 @@ module Api
             def show
                 chat_transcript = ChatTranscript.find_by(id: params[:id])
                 
-                render json: ChatTranscriptSerializer.new(chat_transcript).serialized_json
+                if chat_transcript
+                    render json: ChatTranscriptSerializer.new(chat_transcript).serialized_json
+                else
+                    render json: { error: 'ChatTranscript not found' }, status: :not_found
+                end
             end
 
             def create
                 chat_transcript = ChatTranscript.new(chat_transcript_params)
-
+              
                 if chat_transcript.save
-                    render json: ChatTranscriptSerializer.new(chat_transcript).serialized_json
+                  render json: ChatTranscriptSerializer.new(chat_transcript).serialized_json
                 else
-                    render json: {error: chat_transcript.errors.message}, status: 422
+                  Rails.logger.debug "ChatTranscript not saved: #{chat_transcript.errors.full_messages}"
+                  render json: {error: chat_transcript.errors.full_messages}, status: 422
                 end
-            end
+              end
 
-            def update
+              def update
                 chat_transcript = ChatTranscript.find_by(id: params[:id])
-
+              
                 if chat_transcript.update(chat_transcript_params)
-                    render json: ChatTranscriptSerializer.new(chat_transcript).serialized_json
+                  render json: ChatTranscriptSerializer.new(chat_transcript).serialized_json
                 else
-                    render json: {error: chat_transcript.errors.message}, status: 422
+                  render json: { error: chat_transcript.errors.full_messages }, status: :unprocessable_entity
                 end
-            end
+              end
 
-            def destroy
+              def destroy
                 chat_transcript = ChatTranscript.find_by(id: params[:id])
-
-                if chat_transcript.destroy
-                    head :no_content
+                
+                if chat_transcript.nil?
+                  render json: { error: 'ChatTranscript not found' }, status: :not_found
+                elsif chat_transcript.destroy
+                  head :no_content
                 else
-                    render json: {error: chat_transcript.errors.message}, status: 422
+                  render json: { error: chat_transcript.errors.full_messages }, status: :unprocessable_entity
                 end
-            end
+              end
 
             private
 
             def chat_transcript_params
-                params.require(:chat_transcript).permit(:name, :description)
+                params.require(:chat_transcript).permit(:messagingUser, :message, :case_id)
             end
         end
     end
