@@ -19,6 +19,7 @@ export default function AuditedCaseReview() {
     const [chatTranscript, setChatTranscript] = useState([])
     const [modalShow, setModalShow] = useState(false)
     const [editScore, setEditScore] = useState(null)
+    const [comment, setComment] = useState('Some comments are here!')
 
     useEffect(() => {
         getCase();
@@ -68,14 +69,6 @@ export default function AuditedCaseReview() {
                 console.log("Unable to fetch cases!")
                 setIsLoading(true)
             })
-    }
-
-    const handleEditScore = (id, value) => {
-        var tempEditScore = editScore
-        if(id == 1) {
-            tempEditScore.aiScore1 = value
-        }
-        setEditScore(tempEditScore)
     }
 
     const getTranscript = async() => {
@@ -185,43 +178,43 @@ export default function AuditedCaseReview() {
                                 aiAuditedScore !== null ? 
                                 <>
                                     <div className='result-wrap'>
-                                        <div className='result' style={{fontWeight: 'bold'}}>Cirteria</div>
+                                        <div className='result' style={{fontWeight: 'bold'}}>Criteria</div>
                                         <div className='result' style={{fontWeight: 'bold'}}>Satisfy/Unsatisfy</div>
                                     </div>
                                     <div className='result-wrap'>
-                                        <div className='result'>Cirteria1</div>
+                                        <div className='result'>Criteria1</div>
                                         <div className='result'>{aiAuditedScore.attributes.aiScore1 === true ? `Satisfy` : `Unsatisfy`}</div>
                                     </div>
                                     <div className='result-wrap'>
-                                        <div className='result'>Cirteria2</div>
+                                        <div className='result'>Criteria2</div>
                                         <div className='result'>{aiAuditedScore.attributes.aiScore2 === true ? `Satisfy` : `Unsatisfy`}</div>
                                     </div>
                                     <div className='result-wrap'>
-                                        <div className='result'>Cirteria3</div>
+                                        <div className='result'>Criteria3</div>
                                         <div className='result'>{aiAuditedScore.attributes.aiScore3 === true ? `Satisfy` : `Unsatisfy`}</div>
                                     </div>
                                     <div className='result-wrap'>
-                                        <div className='result'>Cirteria4</div>
+                                        <div className='result'>Criteria4</div>
                                         <div className='result'>{aiAuditedScore.attributes.aiScore4 === true ? `Satisfy` : `Unsatisfy`}</div>
                                     </div>
                                     <div className='result-wrap'>
-                                        <div className='result'>Cirteria5</div>
+                                        <div className='result'>Criteria5</div>
                                         <div className='result'>{aiAuditedScore.attributes.aiScore5 === true ? `Satisfy` : `Unsatisfy`}</div>
                                     </div>
                                     <div className='result-wrap'>
-                                        <div className='result'>Cirteria6</div>
+                                        <div className='result'>Criteria6</div>
                                         <div className='result'>{aiAuditedScore.attributes.aiScore6 === true ? `Satisfy` : `Unsatisfy`}</div>
                                     </div>
                                     <div className='result-wrap'>
-                                        <div className='result'>Cirteria7</div>
+                                        <div className='result'>Criteria7</div>
                                         <div className='result'>{aiAuditedScore.attributes.aiScore7 === true ? `Satisfy` : `Unsatisfy`}</div>
                                     </div>
                                     <div className='result-wrap'>
-                                        <div className='result'>Cirteria8</div>
+                                        <div className='result'>Criteria8</div>
                                         <div className='result'>{aiAuditedScore.attributes.aiScore8 === true ? `Satisfy` : `Unsatisfy`}</div>
                                     </div>
                                     <div className='result-wrap'>
-                                        <div className='result'>Cirteria9</div>
+                                        <div className='result'>Criteria9</div>
                                         <div className='result'>{aiAuditedScore.attributes.aiScore9 === true ? `Satisfy` : `Unsatisfy`}</div>
                                     </div>
                                     <div className='result-wrap'>
@@ -267,13 +260,13 @@ export default function AuditedCaseReview() {
                     editScore !== null &&
                     <div>
                     <div className='radio-wrap'>
-                        <div style={{width: '15%'}}>Cirteria1</div>
+                        <div style={{width: '15%'}}>Criteria1</div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={editScore.aiScore1}
                                 onChange={() => {
-                                    handleEditScore(1,true)
+                                    setEditScore((scores) => ({ ...scores, aiScore1: true }))
                                 }}
                             /> Satisfy
                         </div>
@@ -282,154 +275,165 @@ export default function AuditedCaseReview() {
                                 type="radio"
                                 checked={!editScore.aiScore1}
                                 onChange={() => {
-                                    handleEditScore(1, false)
+                                    setEditScore((scores) => ({ ...scores, aiScore1: false }))
                                 }}
                             /> Unsatisfy
                         </div>
                     </div>
                     <div className='radio-wrap'>
-                        <div style={{width: '15%'}}>Cirteria2</div>
+                        <div style={{width: '15%'}}>Criteria2</div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={editScore.aiScore2}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore2: true }))}
                             /> Satisfy
                         </div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={!editScore.aiScore2}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore2: false }))}
                             /> Unsatisfy
                         </div>
                     </div>
                     <div className='radio-wrap'>
-                        <div style={{width: '15%'}}>Cirteria3</div>
+                        <div style={{width: '15%'}}>Criteria3</div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={editScore.aiScore3}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore3: true }))}
                             /> Satisfy
                         </div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={!editScore.aiScore3}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore3: false }))}
                             /> Unsatisfy
                         </div>
                     </div>
                     <div className='radio-wrap'>
-                        <div style={{width: '15%'}}>Cirteria4</div>
+                        <div style={{width: '15%'}}>Criteria4</div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={editScore.aiScore4}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore4: true }))}
                             /> Satisfy
                         </div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={!editScore.aiScore4}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore4: false }))}
                             /> Unsatisfy
                         </div>
                     </div>
                     <div className='radio-wrap'>
-                        <div style={{width: '15%'}}>Cirteria5</div>
+                        <div style={{width: '15%'}}>Criteria5</div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={editScore.aiScore5}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore5: true }))}
                             /> Satisfy
                         </div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={!editScore.aiScore5}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore5: false }))}
                             /> Unsatisfy
                         </div>
                     </div>
                     <div className='radio-wrap'>
-                        <div style={{width: '15%'}}>Cirteria6</div>
+                        <div style={{width: '15%'}}>Criteria6</div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={editScore.aiScore6}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore6: true }))}
                             /> Satisfy
                         </div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={!editScore.aiScore6}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore6: false }))}
                             /> Unsatisfy
                         </div>
                     </div>
                     <div className='radio-wrap'>
-                        <div style={{width: '15%'}}>Cirteria7</div>
+                        <div style={{width: '15%'}}>Criteria7</div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={editScore.aiScore7}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore7: true }))}
                             /> Satisfy
                         </div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={!editScore.aiScore7}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore7: false }))}
                             /> Unsatisfy
                         </div>
                     </div>
                     <div className='radio-wrap'>
-                        <div style={{width: '15%'}}>Cirteria8</div>
+                        <div style={{width: '15%'}}>Criteria8</div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={editScore.aiScore8}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore8: true }))}
                             /> Satisfy
                         </div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={!editScore.aiScore8}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore8: false }))}
                             /> Unsatisfy
                         </div>
                     </div>
                     <div className='radio-wrap'>
-                        <div style={{width: '15%'}}>Cirteria9</div>
+                        <div style={{width: '15%'}}>Criteria9</div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={editScore.aiScore9}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore9: true }))}
                             /> Satisfy
                         </div>
                         <div style={{width: '15%'}}>
                             <input
                                 type="radio"
                                 checked={!editScore.aiScore9}
-                                onChange={() => console.log("Something")}
+                                onChange={() => setEditScore((scores) => ({ ...scores, aiScore9: false }))}
                             /> Unsatisfy
                         </div>
                     </div>
                     <div className='radio-wrap'>
                         <div style={{width: '15%'}}>Total:</div>
-                        <Form.Control type="number" style={{width: '30%'}} value={editScore.totalScore} />
+                        <Form.Control 
+                            type="number" 
+                            style={{width: '30%'}} 
+                            value={editScore.totalScore} 
+                            onChange={(e) => setEditScore((scores) => ({ ...scores, totalScore: e.target.value }))}
+                        />
                     </div>
                     <div className='comment-wrap'>
                         <div style={{width: '15%'}}>Comment:</div>
-                        <Form.Control as="textarea" rows={3} style={{width: '100%'}} value={`Some comments are here!`}/>
+                        <Form.Control 
+                            as="textarea" 
+                            rows={3} 
+                            style={{width: '100%'}} 
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                        />
                     </div>
                 </div>
                 }
