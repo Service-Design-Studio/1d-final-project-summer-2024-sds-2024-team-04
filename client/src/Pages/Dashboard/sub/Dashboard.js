@@ -251,11 +251,15 @@
 
 
 
-//celest try
+//celest try (USING MINT KHANT'S CODE TO HELP ME WITH THE BASE) - changing layout, and adding filter and search bar
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+
+// Component
 import { Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+
+// CSS
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -296,7 +300,12 @@ const Dashboard = () => {
 
     const getCases = () => {
         setIsLoading(true);
-        fetch("http://127.0.0.1:3000/api/v1/cases")
+        const requestOptions = {
+            method: "GET",
+            redirect: "follow"
+        };
+
+        fetch("http://127.0.0.1:3000/api/v1/cases", requestOptions)
             .then((response) => response.json())
             .then((response) => {
                 setCases(response.data);
@@ -310,7 +319,12 @@ const Dashboard = () => {
 
     const getAiAuditedScore = () => {
         setIsLoading(true);
-        fetch("http://127.0.0.1:3000/api/v1/ai_audited_scores")
+        const requestOptions = {
+            method: "GET",
+            redirect: "follow"
+        };
+
+        fetch("http://127.0.0.1:3000/api/v1/ai_audited_scores", requestOptions)
             .then((response) => response.json())
             .then((response) => {
                 setAiAuditedScore(response.data);
@@ -333,11 +347,14 @@ const Dashboard = () => {
 
         const raw = JSON.stringify({ status: 1 });
 
-        fetch(`http://127.0.0.1:3000/api/v1/cases/${item.id}`, {
+        const requestOptions = {
             method: "PATCH",
             headers: myHeaders,
-            body: raw
-        })
+            body: raw,
+            redirect: "follow"
+        };
+
+        fetch(`http://127.0.0.1:3000/api/v1/cases/${item.id}`, requestOptions)
             .then(() => getCases())
             .catch(() => {
                 console.log("Unable to update the cases!");
@@ -446,13 +463,8 @@ const Dashboard = () => {
                                 <div style={{ width: "25%" }}>Timestamp</div>
                                 <div style={{ width: "15%" }}>Status</div>
                             </div>
-                            <>
-                                {auditedCasecardList.length > 0 ? (
-                                    auditedCasecardList
-                                ) : (
-                                    <div>No audited case</div>
-                                )}
-                            </>
+                            {unAuditedCasecardList}
+                            {auditedCasecardList.length > 0 && auditedCasecardList}
                         </div>
                     </Col>
                 </div>
