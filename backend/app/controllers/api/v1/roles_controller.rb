@@ -20,7 +20,7 @@ module Api
                 if role.save
                     render json: RoleSerializer.new(role).serialized_json
                 else
-                    render json: {error: role.errors.message}, status: 422
+                    render json: {error: role.errors.full_messages}, status: 422
                 end
             end
 
@@ -30,7 +30,7 @@ module Api
                 if role.update(role_params)
                     render json: RoleSerializer.new(role).serialized_json
                 else
-                    render json: {error: role.errors.message}, status: 422
+                    render json: {error: role.errors.full_messages}, status: 422
                 end
             end
 
@@ -40,7 +40,7 @@ module Api
                 if role.destroy
                     head :no_content
                 else
-                    render json: {error: role.errors.message}, status: 422
+                    render json: {error: role.errors.full_messages}, status: 422
                 end
             end
 

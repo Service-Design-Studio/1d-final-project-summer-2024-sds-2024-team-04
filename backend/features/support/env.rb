@@ -6,6 +6,24 @@
 
 
 require 'cucumber/rails'
+require 'capybara/cucumber'
+require 'selenium-webdriver'
+
+Capybara.register_driver :selenium do |app|
+  options = Selenium::WebDriver::Chrome::Options.new
+  options.add_argument('--headless') # Uncomment this line if you want to run tests in headless mode
+  options.add_argument('--disable-gpu') # Disable GPU for headless mode
+  options.add_argument('--no-sandbox') # Required for CI environments
+
+  Capybara::Selenium::Driver.new(app,
+    browser: :chrome,
+    options: options
+  )
+end
+
+Capybara.default_driver = :selenium
+Capybara.javascript_driver = :selenium
+
 
 # By default, any exception happening in your Rails application will bubble up
 # to Cucumber so that your scenario will fail. This is a different from how
