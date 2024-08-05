@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       resources :cases
       resources :chat_transcripts
       resources :ai_audited_scores
+      resources :human_audited_scores
     end
   end
 end
