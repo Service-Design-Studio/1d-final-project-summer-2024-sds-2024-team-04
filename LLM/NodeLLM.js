@@ -1,17 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const axios = require('axios');
 const { GoogleAuth } = require('google-auth-library');
 const { VertexAI } = require('@google-cloud/vertexai');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 app.use(bodyParser.json());
 
 // Path to your service account key file
 const KEY_PATH = "C:\\Users\\khair\\github-classroom\\Service-Design-Studio\\1d-final-project-summer-2024-sds-2024-team-04\\LLM\\sds-cpf-429016-8b9ea9770c89.json";
-
 
 const projectId = "sds-cpf-429016";
 const location = "us-central1";
@@ -167,9 +167,9 @@ async function evaluateCriterion(criterionName, prompt, transcript) {
     const resultText = result.response.candidates[0].content.parts[0].text.trim();
     let outcome = "UNDETERMINED";
     if (resultText.includes("PASS")) {
-      outcome = "PASS";
+      outcome = true;
     } else if (resultText.includes("FAIL")) {
-      outcome = "FAIL";
+      outcome = false;
     }
     return outcome;
   } catch (error) {
@@ -181,6 +181,7 @@ async function evaluateCriterion(criterionName, prompt, transcript) {
 app.post('/audit', async (req, res) => {
   const data = req.body;
   const chatTranscript = data.whole_conversation || '';
+  const caseId = data.case_id;
 
   // Evaluate each criterion and store the results
   const results = {};
@@ -188,19 +189,49 @@ app.post('/audit', async (req, res) => {
     results[criterion] = await evaluateCriterion(criterion, prompt, chatTranscript);
   }
 
-  // Calculate the score based on the results
-  const score = Object.values(results).filter(result => result === "PASS").length / Object.keys(results).length * 100;
+  // Generate feedback based on the criteria results
+  const feedback = Object.entries(results).map(([criterion, result], index) => `${criterion}: ${result ? 'PASS' : 'FAIL'}`).join('\n');
 
-  // Create the final output as a JSON object
+  // Calculate the score based on the results and round to the nearest whole number
+  const score = Math.round(Object.values(results).filter(result => result === true).length / Object.keys(results).length * 100);
+
+  // Create the final output as a JSON object in the specified format
   const finalOutput = {
-    criteria: Object.entries(results).reduce((acc, [name, result], index) => {
-      acc[`Criterion ${index + 1}`] = { name, result };
-      return acc;
-    }, {}),
-    score
+    ai_audited_score: {
+      aiScore1: results["Accuracy of Information Provided"],
+      aiScore2: results["Completeness of Responses"],
+      aiScore3: results["Timeliness of Responses"],
+      aiScore4: results["Clarity and Understandability"],
+      aiScore5: results["Professionalism and Courtesy"],
+      aiScore6: results["Adherence to Company Policies and Procedures"],
+      aiScore7: results["Problem-Solving Ability"],
+      aiScore8: results["Use of Service-Oriented Language"],
+      aiScore9: results["Documentation and Record-Keeping"],
+      aiFeedback: feedback,
+      totalScore: score,
+      isMadeCorrection: false,
+      case_id: caseId
+    }
   };
 
-  res.json(finalOutput);
+  try {
+    // Send POST request to save the score
+    const postResponse = await axios.post('http://localhost:3000/api/v1/ai_audited_scores', finalOutput);
+    console.log('POST response:', postResponse.data);
+
+    // Send PUT request to update the case status to 0
+    const putResponse = await axios.put(`http://localhost:3000/api/v1/cases/${caseId}`, {
+      case: {
+        status: 2
+      }
+    });
+    console.log('PUT response:', putResponse.data);
+
+    res.json(finalOutput);
+  } catch (error) {
+    console.error('Error during API requests:', error);
+    res.status(500).json({ error: 'Failed to create audit score or update case status' });
+  }
 });
 
 app.listen(PORT, () => {

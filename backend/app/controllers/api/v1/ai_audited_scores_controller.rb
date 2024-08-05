@@ -1,10 +1,11 @@
 module Api
     module V1
         class AiAuditedScoresController < ApplicationController
-            protect_from_forgery with: :null_session
+            # Skip CSRF token verification for API requests
+            protect_from_forgery with: :null_session # Added to handle CSRF for API requests
+            
             def index
                 ai_audited_scores = AiAuditedScore.all
-
                 render json: AiAuditedScoreSerializer.new(ai_audited_scores).serialized_json
             end
 
@@ -22,11 +23,11 @@ module Api
                 ai_audited_score = AiAuditedScore.new(ai_audited_score_params)
               
                 if ai_audited_score.save
-                  render json: AiAuditedScoreSerializer.new(ai_audited_score).serialized_json
+                    render json: AiAuditedScoreSerializer.new(ai_audited_score).serialized_json
                 else
-                  render json: { error: ai_audited_score.errors.full_messages }, status: :unprocessable_entity
+                    render json: { error: ai_audited_score.errors.full_messages }, status: :unprocessable_entity
                 end
-              end
+            end
 
             def update
                 ai_audited_score = AiAuditedScore.find_by(id: params[:id])
@@ -44,7 +45,7 @@ module Api
                 ai_audited_score = AiAuditedScore.find_by(id: params[:id])
 
                 if ai_audited_score.nil?
-                  render json: { error: 'Score not found' }, status: :not_found
+                    render json: { error: 'Score not found' }, status: :not_found
                 elsif ai_audited_score.destroy
                     head :no_content
                 else
@@ -54,10 +55,10 @@ module Api
 
             private
 
+            # Edited to include :case_id in the permitted parameters
             def ai_audited_score_params
-                params.require(:ai_audited_score).permit(:aiScore1, :aiScore2, :aiScore3, :aiScore4, :aiScore5, :aiScore6, :aiScore7, :aiScore8, :aiScore9, :aiFeedback, :totalScore, :isMadeCorrection, :case_id)
+                params.require(:ai_audited_score).permit(:aiScore1, :aiScore2, :aiScore3, :aiScore4, :aiScore5, :aiScore6, :aiScore7, :aiScore8, :aiScore9, :aiFeedback, :totalScore, :isMadeCorrection, :case_id) # Added :case_id to permitted parameters
             end
-              
         end
     end
 end
