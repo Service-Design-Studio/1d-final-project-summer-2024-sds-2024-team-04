@@ -189,7 +189,11 @@ const Dashboard = () => {
             <div style={{ width: "25%" }}>
                 {moment(item.attributes.created_at).format("MMMM DD YYYY, HH:mm:ss")}
             </div>
-            <div className="status-completed">Completed</div>
+            {
+                item.attributes.status == 1 ?
+                <div style={{ backgroundColor: "rgba(255, 240, 0, 0.4)", padding: "3px", borderRadius: '5px', width: '15%'}}>In Progress</div> :
+                <div style={{ backgroundColor: "rgba(0, 255, 0, 0.4)", padding: "3px", borderRadius: '5px', width: '15%'}}>Completed</div>
+            }
         </div>
     ));
     
