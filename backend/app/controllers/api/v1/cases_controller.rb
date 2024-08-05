@@ -11,11 +11,7 @@ module Api
             def show
                 cases = Case.find_by(id: params[:id])
                 
-                if cases 
-                    render json: CaseSerializer.new(cases).serialized_json
-                else
-                    render json: { error: 'Case not found' }, status: :not_found
-                end
+                render json: CaseSerializer.new(cases).serialized_json
             end
 
             def create
@@ -24,36 +20,29 @@ module Api
                 if cases.save
                     render json: CaseSerializer.new(cases).serialized_json
                 else
-                    render json: {error: cases.errors.full_messages}, status: 422
+                    render json: {error: cases.errors.message}, status: 422
                 end
             end
 
             def update
                 cases = Case.find_by(id: params[:id])
-              
-                if cases.nil?
-                  render json: { error: 'Case not found' }, status: :not_found
-                elsif cases.update(case_params)
-                  render json: CaseSerializer.new(cases).serialized_json
-                else
-                  render json: { error: cases.errors.full_messages }, status: :unprocessable_entity
-                end
-              end
-              
-              
 
-              def destroy
-                case_record = Case.find_by(id: params[:id])
-                
-                if case_record.nil?
-                  render json: { error: 'Case not found' }, status: :not_found
-                elsif case_record.destroy
-                  head :no_content
+                if cases.update(case_params)
+                    render json: CaseSerializer.new(cases).serialized_json
                 else
-                  render json: { error: 'Failed to destroy the case' }, status: :unprocessable_entity
+                    render json: {error: cases.errors.message}, status: 422
                 end
-              end
-              
+            end
+
+            def destroy
+                cases = Case.find_by(id: params[:id])
+
+                if cases.destroy
+                    head :no_content
+                else
+                    render json: {error: cases.errors.message}, status: 422
+                end
+            end
 
             private
 

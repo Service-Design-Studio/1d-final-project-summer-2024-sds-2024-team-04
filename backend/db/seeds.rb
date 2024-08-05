@@ -155,3 +155,4 @@ ai_audited_scores = AiAuditedScore.create([
         case: cases.first
     } 
 ])
+
