@@ -1,154 +1,137 @@
-import React, {useState, useEffect} from 'react'
-
-import { Row, Button, Alert, Col } from 'react-bootstrap'
-import OverrideModal from './components/OverrideModal'
+import React, { useState, useEffect } from 'react';
+import { Row, Button, Alert, Col } from 'react-bootstrap';
+import OverrideModal from './components/OverrideModal';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import { useNavigate, useParams } from 'react-router-dom'
-
-import './AuditedCasesReview.css'
+import { useNavigate, useParams } from 'react-router-dom';
+import './AuditedCasesReview.css';
 
 export default function AuditedCaseReview() {
-
     const navigate = useNavigate();
     const parms = useParams();
     const [isLoading, setIsLoading] = useState(false);
-    const [cases, setCase] = useState(null)
-    const [employee, setEmployee] = useState(null)
-    const [aiAuditedScore, setAiAuditedScore] = useState(null)
-    const [chatTranscript, setChatTranscript] = useState([])
-    const [modalShow, setModalShow] = useState(false)
-    const [editScore, setEditScore] = useState(null)
-    const [comment, setComment] = useState('Some comments are here!')
+    const [cases, setCase] = useState(null);
+    const [employee, setEmployee] = useState(null);
+    const [aiAuditedScore, setAiAuditedScore] = useState(null);
+    const [chatTranscript, setChatTranscript] = useState([]);
+    const [modalShow, setModalShow] = useState(false);
+    const [editScore, setEditScore] = useState(null);
+    const [comment, setComment] = useState('Some comments are here!');
 
     useEffect(() => {
         getCase();
-    },[])
+    }, []);
 
     useEffect(() => {
-        if(aiAuditedScore !== null){
-            setEditScore(aiAuditedScore.attributes)
+        if (aiAuditedScore !== null) {
+            setEditScore(aiAuditedScore.attributes);
         }
-    },[aiAuditedScore])
+    }, [aiAuditedScore]);
 
     useEffect(() => {
-        console.log(chatTranscript.length)
-    },[chatTranscript])
+        console.log(chatTranscript.length);
+    }, [chatTranscript]);
 
-    useEffect( () => {
-        if(cases !== null){
-            getEmployee()
-            if(cases.relationships.ai_audited_score.data !== null){
-                getAiAuditedScore()
+    useEffect(() => {
+        if (cases !== null) {
+            getEmployee();
+            if (cases.relationships.ai_audited_score.data !== null) {
+                getAiAuditedScore();
             }
-            setChatTranscript([])
-            // cases.relationships.chat_transcript.data.forEach(chat => {
-            //     getTranscript(chat.id)
-            // });
-            getTranscript()
+            setChatTranscript([]);
+            getTranscript();
         }
-    },[cases])
-
-    
+    }, [cases]);
 
     const getCase = () => {
         setIsLoading(true);
         const requestOptions = {
-            method: "GET",
-            redirect: "follow"
+            method: 'GET',
+            redirect: 'follow'
         };
 
         fetch(`http://127.0.0.1:3000/api/v1/cases/${parms.id}`, requestOptions)
-            .then((respnse) => respnse.json())
+            .then((response) => response.json())
             .then((response) => {
-                console.log(JSON.stringify(response))
-                setCase(response.data)
-                setIsLoading(false)
+                console.log(JSON.stringify(response));
+                setCase(response.data);
+                setIsLoading(false);
             })
             .catch(() => {
-                console.log("Unable to fetch cases!")
-                setIsLoading(true)
-            })
-    }
+                console.log('Unable to fetch cases!');
+                setIsLoading(true);
+            });
+    };
 
-    const getTranscript = async() => {
-        var tempTrasncript = []
+    const getTranscript = async () => {
+        var tempTranscript = [];
         setIsLoading(true);
         const requestOptions = {
-            method: "GET",
-            redirect: "follow"
+            method: 'GET',
+            redirect: 'follow'
         };
 
-        for( const chat of cases.relationships.chat_transcript.data){
-            const response = await fetch(`http://127.0.0.1:3000/api/v1/chat_transcripts/${chat.id}`, requestOptions)
-            const responseJson = await response.json()
-            tempTrasncript.push(responseJson.data)
-            // setChatTranscript(transcript => [...transcript, responseJson.data])
+        for (const chat of cases.relationships.chat_transcript.data) {
+            const response = await fetch(`http://127.0.0.1:3000/api/v1/chat_transcripts/${chat.id}`, requestOptions);
+            const responseJson = await response.json();
+            tempTranscript.push(responseJson.data);
         }
-        setChatTranscript(tempTrasncript)
-
-        // fetch(`http://127.0.0.1:3000/api/v1/chat_transcripts/${id}`, requestOptions)
-        //     .then((respnse) => respnse.json())
-        //     .then((response) => {
-        //         console.log(JSON.stringify(response))
-        //         setChatTranscript(transcript => [...transcript, response.data])
-                
-        //     })
-        //     .catch(() => {
-        //         console.log("Unable to fetch cases!")
-        //         setIsLoading(true)
-        //     })
-    }
+        setChatTranscript(tempTranscript);
+    };
 
     const getAiAuditedScore = () => {
         setIsLoading(true);
         const requestOptions = {
-            method: "GET",
-            redirect: "follow"
+            method: 'GET',
+            redirect: 'follow'
         };
 
         fetch(`http://127.0.0.1:3000/api/v1/ai_audited_scores/${cases.relationships.ai_audited_score.data.id}`, requestOptions)
-            .then((respnse) => respnse.json())
+            .then((response) => response.json())
             .then((response) => {
-                console.log(JSON.stringify(response))
-                setAiAuditedScore(response.data)
-                setIsLoading(false)
+                console.log(JSON.stringify(response));
+                setAiAuditedScore(response.data);
+                setIsLoading(false);
             })
             .catch(() => {
-                console.log("Unable to fetch ai score!")
-                setIsLoading(true)
-            })
-    }
+                console.log('Unable to fetch ai score!');
+                setIsLoading(true);
+            });
+    };
 
     const getEmployee = () => {
         setIsLoading(true);
         const requestOptions = {
-            method: "GET",
-            redirect: "follow"
+            method: 'GET',
+            redirect: 'follow'
         };
 
         fetch(`http://127.0.0.1:3000/api/v1/employees/${cases.attributes.employee_id}`, requestOptions)
-            .then((respnse) => respnse.json())
+            .then((response) => response.json())
             .then((response) => {
-                console.log(JSON.stringify(response))
-                setEmployee(response.data)
-                setIsLoading(false)
+                console.log(JSON.stringify(response));
+                setEmployee(response.data);
+                setIsLoading(false);
             })
             .catch(() => {
-                console.log("Unable to fetch employee!")
-                setIsLoading(true)
-            })
-    }
+                console.log('Unable to fetch employee!');
+                setIsLoading(true);
+            });
+    };
 
-    const chatTranscriptList = chatTranscript.map((item, index) =>
-        <div style={{width: '100%', textAlign: 'left', margin: '5px'}}>
-            {`${item.attributes.messagingUser} : ${item.attributes.message}`}
+    const chatTranscriptList = chatTranscript.map((item, index) => (
+        <div className={`chat-message ${item.attributes.messagingUser === 'Officer' ? 'sent' : 'received'}`} key={index}>
+            <div className="chat-user">{item.attributes.messagingUser}</div>
+            <div className="chat-text">{item.attributes.message}</div>
         </div>
-    )
+    ));
 
   return (
     <div className='case_container'>
-        <h2 style={{marginBottom: '20px'}}>Case Review</h2>
+            <button className='btn-back-dashboard' onClick={() => navigate('/dashboard')}> 
+                Back to Dashboard
+            </button>
+            <h2 style={{ marginBottom: '20px' }}>Case Review</h2>
         {
             cases === null ? 
             <div>Loading....</div>:
