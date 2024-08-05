@@ -20,7 +20,6 @@ export default function AuditedCaseReview() {
     const [chatTranscript, setChatTranscript] = useState([])
     const [modalShow, setModalShow] = useState(false)
     const [editScore, setEditScore] = useState(null)
-    const [comment, setComment] = useState('Some comments are here!')
 
     useEffect(() => {
         getCase();
@@ -30,7 +29,7 @@ export default function AuditedCaseReview() {
         if(aiAuditedScore !== null){
             setEditScore(aiAuditedScore.attributes)
             if(aiAuditedScore.relationships.human_audited_score.data.length !== 0){
-                getHumanAuditedScore((aiAuditedScore.relationships.human_audited_score.data.length - 1))
+                getHumanAuditedScore((aiAuditedScore.relationships.human_audited_score.data[aiAuditedScore.relationships.human_audited_score.data.length -1].id))
             }
         }
     },[aiAuditedScore])
