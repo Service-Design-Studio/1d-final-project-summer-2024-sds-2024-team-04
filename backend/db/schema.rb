@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_07_10_064907) do
+ActiveRecord::Schema[7.2].define(version: 2024_07_24_134456) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -65,6 +65,26 @@ ActiveRecord::Schema[7.2].define(version: 2024_07_10_064907) do
     t.index ["role_id"], name: "index_employees_on_role_id"
   end
 
+  create_table "human_audited_scores", force: :cascade do |t|
+    t.boolean "huScore1"
+    t.boolean "huScore2"
+    t.boolean "huScore3"
+    t.boolean "huScore4"
+    t.boolean "huScore5"
+    t.boolean "huScore6"
+    t.boolean "huScore7"
+    t.boolean "huScore8"
+    t.boolean "huScore9"
+    t.string "huFeedback"
+    t.float "huTotalScore"
+    t.bigint "user_id", null: false
+    t.bigint "ai_audited_score_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ai_audited_score_id"], name: "index_human_audited_scores_on_ai_audited_score_id"
+    t.index ["user_id"], name: "index_human_audited_scores_on_user_id"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -85,5 +105,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_07_10_064907) do
   add_foreign_key "cases", "employees"
   add_foreign_key "chat_transcripts", "cases"
   add_foreign_key "employees", "roles"
+  add_foreign_key "human_audited_scores", "ai_audited_scores"
+  add_foreign_key "human_audited_scores", "users"
   add_foreign_key "users", "employees"
 end

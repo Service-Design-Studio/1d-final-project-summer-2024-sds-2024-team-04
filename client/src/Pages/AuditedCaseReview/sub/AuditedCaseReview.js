@@ -10,23 +10,43 @@ export default function AuditedCaseReview() {
     const navigate = useNavigate();
     const parms = useParams();
     const [isLoading, setIsLoading] = useState(false);
-    const [cases, setCase] = useState(null);
-    const [employee, setEmployee] = useState(null);
-    const [aiAuditedScore, setAiAuditedScore] = useState(null);
-    const [chatTranscript, setChatTranscript] = useState([]);
-    const [modalShow, setModalShow] = useState(false);
-    const [editScore, setEditScore] = useState(null);
-    const [comment, setComment] = useState('Some comments are here!');
+    const [cases, setCase] = useState(null)
+    const [employee, setEmployee] = useState(null)
+    const [aiAuditedScore, setAiAuditedScore] = useState(null)
+    const [huAuditedScore, setHuAuditedScore] = useState(null)
+    const [chatTranscript, setChatTranscript] = useState([])
+    const [modalShow, setModalShow] = useState(false)
+    const [editScore, setEditScore] = useState(null)
 
     useEffect(() => {
         getCase();
     }, []);
 
     useEffect(() => {
-        if (aiAuditedScore !== null) {
-            setEditScore(aiAuditedScore.attributes);
+        if(aiAuditedScore !== null){
+            setEditScore(aiAuditedScore.attributes)
+            if(aiAuditedScore.relationships.human_audited_score.data.length !== 0){
+                getHumanAuditedScore((aiAuditedScore.relationships.human_audited_score.data[aiAuditedScore.relationships.human_audited_score.data.length -1].id))
+            }
         }
-    }, [aiAuditedScore]);
+    },[aiAuditedScore])
+
+    useEffect(() => {
+        if(huAuditedScore !== null){
+            setEditScore((scores) => ({ ...scores, aiScore1: huAuditedScore.attributes.huScore1 }))
+            setEditScore((scores) => ({ ...scores, aiScore2: huAuditedScore.attributes.huScore2 }))
+            setEditScore((scores) => ({ ...scores, aiScore3: huAuditedScore.attributes.huScore3 }))
+            setEditScore((scores) => ({ ...scores, aiScore4: huAuditedScore.attributes.huScore4 }))
+            setEditScore((scores) => ({ ...scores, aiScore5: huAuditedScore.attributes.huScore5 }))
+            setEditScore((scores) => ({ ...scores, aiScore6: huAuditedScore.attributes.huScore6 }))
+            setEditScore((scores) => ({ ...scores, aiScore7: huAuditedScore.attributes.huScore7 }))
+            setEditScore((scores) => ({ ...scores, aiScore8: huAuditedScore.attributes.huScore8 }))
+            setEditScore((scores) => ({ ...scores, aiScore9: huAuditedScore.attributes.huScore9 }))
+            setEditScore((scores) => ({ ...scores, totalScore: huAuditedScore.attributes.huTotalScore }))
+            setEditScore((scores) => ({ ...scores, aiFeedback: huAuditedScore.attributes.huFeedback }))
+        }
+    },[huAuditedScore])
+
 
     useEffect(() => {
         console.log(chatTranscript.length);
@@ -58,10 +78,30 @@ export default function AuditedCaseReview() {
                 setIsLoading(false);
             })
             .catch(() => {
-                console.log('Unable to fetch cases!');
-                setIsLoading(true);
-            });
-    };
+                console.log("Unable to fetch cases!")
+                setIsLoading(true)
+            })
+    }
+
+    const getHumanAuditedScore = (id) => {
+        setIsLoading(true);
+        const requestOptions = {
+            method: "GET",
+            redirect: "follow"
+        };
+
+        fetch(`http://127.0.0.1:3000/api/v1/human_audited_scores/${id}`, requestOptions)
+            .then((respnse) => respnse.json())
+            .then((response) => {
+                console.log(JSON.stringify(response))
+                setHuAuditedScore(response.data)
+                setIsLoading(false)
+            })
+            .catch(() => {
+                console.log("Unable to fetch cases!")
+                setIsLoading(true)
+            })
+    }
 
     const getTranscript = async () => {
         var tempTranscript = [];
@@ -94,10 +134,39 @@ export default function AuditedCaseReview() {
                 setIsLoading(false);
             })
             .catch(() => {
-                console.log('Unable to fetch ai score!');
-                setIsLoading(true);
-            });
-    };
+                console.log("Unable to fetch ai score!")
+                setIsLoading(true)
+            })
+    }
+
+    const updateAiAuditedScore = () => {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json")
+
+        const raw = JSON.stringify({
+            "isMadeCorrection": true
+        })
+
+        const requestOptions = {
+            method: "PATCH",
+            headers: myHeaders,
+            body: raw,
+            //redirect: "folllow"
+        };
+
+        fetch(`http://127.0.0.1:3000/api/v1/ai_audited_scores/${aiAuditedScore.id}`, requestOptions)
+            .then((respnse) => respnse.json())
+            .then((response) => {
+                console.log(JSON.stringify(response))
+                setAiAuditedScore(response.data)
+                getAiAuditedScore()
+                setIsLoading(false)
+            })
+            .catch(() => {
+                console.log("Unable to update the result!")
+                setIsLoading(true)
+            })
+    }
 
     const getEmployee = () => {
         setIsLoading(true);
@@ -114,10 +183,53 @@ export default function AuditedCaseReview() {
                 setIsLoading(false);
             })
             .catch(() => {
-                console.log('Unable to fetch employee!');
-                setIsLoading(true);
-            });
-    };
+                console.log("Unable to fetch employee!")
+                setIsLoading(true)
+            })
+    }
+
+    const overrideResult = () => {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json")
+
+        const raw = JSON.stringify({
+            "huScore1": editScore.aiScore1,
+            "huScore2": editScore.aiScore2,
+            "huScore3": editScore.aiScore3,
+            "huScore4": editScore.aiScore4,
+            "huScore5": editScore.aiScore5,
+            "huScore6": editScore.aiScore6,
+            "huScore7": editScore.aiScore7,
+            "huScore8": editScore.aiScore8,
+            "huScore9": editScore.aiScore9,
+            "huFeedback": editScore.aiFeedback,
+            "huTotalScore": 80,
+            "user_id": 1,
+            "ai_audited_score_id": parseInt(aiAuditedScore.id)
+        })
+
+        console.log(raw)
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            //redirect: "folllow"
+        };
+
+        fetch(`http://127.0.0.1:3000/api/v1/human_audited_scores`, requestOptions)
+            .then((respnse) => respnse.json())
+            .then((response) => {
+                console.log(JSON.stringify(response))
+                updateAiAuditedScore()
+                setModalShow(false)
+                setIsLoading(false)
+            })
+            .catch((response) => {
+                console.log(response)
+                setIsLoading(true)
+            })
+    }
 
     const chatTranscriptList = chatTranscript.map((item, index) => (
         <div className={`chat-message ${item.attributes.messagingUser === 'Officer' ? 'sent' : 'received'}`} key={index}>
@@ -156,59 +268,119 @@ export default function AuditedCaseReview() {
                             </div>
                         </div>
                         <div className='result-card'>
-                            <h5>AI Audit Result</h5>
+                            <h5>Audit Result</h5>
                             {
                                 aiAuditedScore !== null ? 
                                 <>
-                                    <div className='result-wrap'>
-                                        <div className='result' style={{fontWeight: 'bold'}}>Criteria</div>
-                                        <div className='result' style={{fontWeight: 'bold'}}>Satisfy/Unsatisfy</div>
-                                    </div>
-                                    <div className='result-wrap'>
-                                        <div className='result'>Criteria1</div>
-                                        <div className='result'>{aiAuditedScore.attributes.aiScore1 === true ? `Satisfy` : `Unsatisfy`}</div>
-                                    </div>
-                                    <div className='result-wrap'>
-                                        <div className='result'>Criteria2</div>
-                                        <div className='result'>{aiAuditedScore.attributes.aiScore2 === true ? `Satisfy` : `Unsatisfy`}</div>
-                                    </div>
-                                    <div className='result-wrap'>
-                                        <div className='result'>Criteria3</div>
-                                        <div className='result'>{aiAuditedScore.attributes.aiScore3 === true ? `Satisfy` : `Unsatisfy`}</div>
-                                    </div>
-                                    <div className='result-wrap'>
-                                        <div className='result'>Criteria4</div>
-                                        <div className='result'>{aiAuditedScore.attributes.aiScore4 === true ? `Satisfy` : `Unsatisfy`}</div>
-                                    </div>
-                                    <div className='result-wrap'>
-                                        <div className='result'>Criteria5</div>
-                                        <div className='result'>{aiAuditedScore.attributes.aiScore5 === true ? `Satisfy` : `Unsatisfy`}</div>
-                                    </div>
-                                    <div className='result-wrap'>
-                                        <div className='result'>Criteria6</div>
-                                        <div className='result'>{aiAuditedScore.attributes.aiScore6 === true ? `Satisfy` : `Unsatisfy`}</div>
-                                    </div>
-                                    <div className='result-wrap'>
-                                        <div className='result'>Criteria7</div>
-                                        <div className='result'>{aiAuditedScore.attributes.aiScore7 === true ? `Satisfy` : `Unsatisfy`}</div>
-                                    </div>
-                                    <div className='result-wrap'>
-                                        <div className='result'>Criteria8</div>
-                                        <div className='result'>{aiAuditedScore.attributes.aiScore8 === true ? `Satisfy` : `Unsatisfy`}</div>
-                                    </div>
-                                    <div className='result-wrap'>
-                                        <div className='result'>Criteria9</div>
-                                        <div className='result'>{aiAuditedScore.attributes.aiScore9 === true ? `Satisfy` : `Unsatisfy`}</div>
-                                    </div>
-                                    <div className='result-wrap'>
-                                        <div className='result' style={{fontWeight: 'bold', fontSize: '22px'}}>Total</div>
-                                        <div className='result' style={{fontWeight: 'bold', fontSize: '22px'}}>{aiAuditedScore.attributes.totalScore}%</div>
-                                    </div>
-                                    <div className='feedback-wrap'>
-                                        <div style={{fontWeight: 'bold', fontSize: '18px'}}>Comment</div>
-                                        <p >Some comments are here !!!</p>
-                                    </div>
-                                    <Button className='btn-override' onClick={() => setModalShow(true)}>Override Result</Button>
+                                    {
+                                        huAuditedScore !== null ?
+                                        <>
+                                            <div className='result-wrap'>
+                                                <div className='result' style={{fontWeight: 'bold'}}>Criteria</div>
+                                                <div className='result' style={{fontWeight: 'bold'}}>Satisfy/Unsatisfy</div>
+                                                {
+                                                    aiAuditedScore.attributes.isMadeCorrection && 
+                                                    <div className='result' style={{fontWeight: 'bold', color: 'blue'}}>Edited</div>
+                                                }
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result'>Criteria1</div>
+                                                <div className='result'>{huAuditedScore.attributes.huScore1 === true ? `Satisfy` : `Unsatisfy`}</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result'>Criteria2</div>
+                                                <div className='result'>{huAuditedScore.attributes.huScore2 === true ? `Satisfy` : `Unsatisfy`}</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result'>Criteria3</div>
+                                                <div className='result'>{huAuditedScore.attributes.huScore3 === true ? `Satisfy` : `Unsatisfy`}</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result'>Criteria4</div>
+                                                <div className='result'>{huAuditedScore.attributes.huScore4 === true ? `Satisfy` : `Unsatisfy`}</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result'>Criteria5</div>
+                                                <div className='result'>{huAuditedScore.attributes.huScore5 === true ? `Satisfy` : `Unsatisfy`}</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result'>Criteria6</div>
+                                                <div className='result'>{huAuditedScore.attributes.huScore6 === true ? `Satisfy` : `Unsatisfy`}</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result'>Criteria7</div>
+                                                <div className='result'>{huAuditedScore.attributes.huScore7 === true ? `Satisfy` : `Unsatisfy`}</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result'>Criteria8</div>
+                                                <div className='result'>{huAuditedScore.attributes.huScore8 === true ? `Satisfy` : `Unsatisfy`}</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result'>Criteria9</div>
+                                                <div className='result'>{huAuditedScore.attributes.huScore9 === true ? `Satisfy` : `Unsatisfy`}</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result' style={{fontWeight: 'bold', fontSize: '22px'}}>Total</div>
+                                                <div className='result' style={{fontWeight: 'bold', fontSize: '22px'}}>{huAuditedScore.attributes.huTotalScore}%</div>
+                                            </div>
+                                            <div className='feedback-wrap'>
+                                                <div style={{fontWeight: 'bold', fontSize: '18px'}}>Comment</div>
+                                                <p >{huAuditedScore.attributes.huFeedback}</p>
+                                            </div>
+                                            <Button className='btn-override' onClick={() => setModalShow(true)}>Override Result</Button>
+                                        </>:
+                                        <>
+                                            <div className='result-wrap'>
+                                                <div className='result' style={{fontWeight: 'bold'}}>Criteria</div>
+                                                <div className='result' style={{fontWeight: 'bold'}}>Satisfy/Unsatisfy</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result'>Criteria1</div>
+                                                <div className='result'>{aiAuditedScore.attributes.aiScore1 === true ? `Satisfy` : `Unsatisfy`}</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result'>Criteria2</div>
+                                                <div className='result'>{aiAuditedScore.attributes.aiScore2 === true ? `Satisfy` : `Unsatisfy`}</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result'>Criteria3</div>
+                                                <div className='result'>{aiAuditedScore.attributes.aiScore3 === true ? `Satisfy` : `Unsatisfy`}</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result'>Criteria4</div>
+                                                <div className='result'>{aiAuditedScore.attributes.aiScore4 === true ? `Satisfy` : `Unsatisfy`}</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result'>Criteria5</div>
+                                                <div className='result'>{aiAuditedScore.attributes.aiScore5 === true ? `Satisfy` : `Unsatisfy`}</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result'>Criteria6</div>
+                                                <div className='result'>{aiAuditedScore.attributes.aiScore6 === true ? `Satisfy` : `Unsatisfy`}</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result'>Criteria7</div>
+                                                <div className='result'>{aiAuditedScore.attributes.aiScore7 === true ? `Satisfy` : `Unsatisfy`}</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result'>Criteria8</div>
+                                                <div className='result'>{aiAuditedScore.attributes.aiScore8 === true ? `Satisfy` : `Unsatisfy`}</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result'>Criteria9</div>
+                                                <div className='result'>{aiAuditedScore.attributes.aiScore9 === true ? `Satisfy` : `Unsatisfy`}</div>
+                                            </div>
+                                            <div className='result-wrap'>
+                                                <div className='result' style={{fontWeight: 'bold', fontSize: '22px'}}>Total</div>
+                                                <div className='result' style={{fontWeight: 'bold', fontSize: '22px'}}>{aiAuditedScore.attributes.totalScore}%</div>
+                                            </div>
+                                            <div className='feedback-wrap'>
+                                                <div style={{fontWeight: 'bold', fontSize: '18px'}}>Comment</div>
+                                                <p >{aiAuditedScore.attributes.aiFeedback}</p>
+                                            </div>
+                                            <Button className='btn-override' onClick={() => setModalShow(true)}>Override Result</Button>
+                                        </>
+                                    }
                                 </>:
                                 <div>No audited result!</div>
                             }
@@ -401,12 +573,7 @@ export default function AuditedCaseReview() {
                     </div>
                     <div className='radio-wrap'>
                         <div style={{width: '15%'}}>Total:</div>
-                        <Form.Control 
-                            type="number" 
-                            style={{width: '30%'}} 
-                            value={editScore.totalScore} 
-                            onChange={(e) => setEditScore((scores) => ({ ...scores, totalScore: e.target.value }))}
-                        />
+                        <div style={{width: '30%'}}>{editScore.totalScore} % </div>
                     </div>
                     <div className='comment-wrap'>
                         <div style={{width: '15%'}}>Comment:</div>
@@ -414,8 +581,8 @@ export default function AuditedCaseReview() {
                             as="textarea" 
                             rows={3} 
                             style={{width: '100%'}} 
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
+                            value={editScore.aiFeedback}
+                            onChange={(e) => setEditScore((scores) => ({ ...scores, aiFeedback: e.target.value }))}
                         />
                     </div>
                 </div>
@@ -423,7 +590,7 @@ export default function AuditedCaseReview() {
                 
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={() => setModalShow(false)}>Submit</Button>
+                <Button onClick={() => overrideResult()}>Submit</Button>
                 <Button onClick={() => setModalShow(false)}>Close</Button>
             </Modal.Footer>
             </Modal>
