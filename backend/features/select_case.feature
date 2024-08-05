@@ -7,5 +7,5 @@ Feature: Login
     Given I am on the dashboard page
     When I click the case with ID "1"
     Then I should be on the case review page for case ID "1"
-    And I should see "Cirteria"
+    And I should see "Criteria"
     And I should see "Satisfy/Unsatisfy"

@@ -3,7 +3,7 @@ Given('I am on the dashboard page') do
   end
   
   When('I click the case with ID {string}') do |case_id|
-    find('.dash-case-warp', text: case_id).click
+    find(:xpath, "//div[contains(@class, 'dash-case-warp') and .//div[text()='#{case_id}']]").click
   end
   
   Then('I should be on the case review page for case ID {string}') do |case_id|
