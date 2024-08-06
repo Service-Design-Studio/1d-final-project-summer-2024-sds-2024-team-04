@@ -9,8 +9,6 @@ module Api
                 
             end
 
-            
-
             private
 
             def options
@@ -18,9 +16,9 @@ module Api
               end
         
 
-            #def case_params
-            #    params.require(:case).permit(:messagingSection, :phoneNumber, :topic, :status, :employee_id)
-            #end
+            def case_params
+                params.require(:case).permit(:messagingSection, :phoneNumber, :topic, :status, :employee_id)
+            end
         end
     end
 end
