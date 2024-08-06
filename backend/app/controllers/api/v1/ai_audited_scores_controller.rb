@@ -12,44 +12,46 @@ module Api
             def show
                 ai_audited_score = AiAuditedScore.find_by(id: params[:id])
                 
-                if ai_audited_score
-                    render json: AiAuditedScoreSerializer.new(ai_audited_score).serialized_json
-                else
-                    render json: { error: 'Score not found' }, status: :not_found
-                end                    
+                render json: AiAuditedScoreSerializer.new(ai_audited_score).serialized_json
             end
 
             def create
                 ai_audited_score = AiAuditedScore.new(ai_audited_score_params)
-              
+
                 if ai_audited_score.save
                     render json: AiAuditedScoreSerializer.new(ai_audited_score).serialized_json
                 else
+<<<<<<< HEAD
                     render json: { error: ai_audited_score.errors.full_messages }, status: :unprocessable_entity
+=======
+                    render json: {error: ai_audited_score.errors.message}, status: 422
+>>>>>>> origin/min-khant
                 end
             end
 
             def update
                 ai_audited_score = AiAuditedScore.find_by(id: params[:id])
 
-                if ai_audited_score.nil?
-                    render json: { error: 'Score not found' }, status: :not_found
-                elsif ai_audited_score.update(ai_audited_score_params)
+                if ai_audited_score.update(ai_audited_score_params)
                     render json: AiAuditedScoreSerializer.new(ai_audited_score).serialized_json
                 else
-                    render json: {error: ai_audited_score.errors.full_messages}, status: 422
+                    render json: {error: ai_audited_score.errors.message}, status: 422
                 end
             end
 
             def destroy
                 ai_audited_score = AiAuditedScore.find_by(id: params[:id])
 
+<<<<<<< HEAD
                 if ai_audited_score.nil?
                     render json: { error: 'Score not found' }, status: :not_found
                 elsif ai_audited_score.destroy
+=======
+                if ai_audited_score.destroy
+>>>>>>> origin/min-khant
                     head :no_content
                 else
-                    render json: {error: 'Failed to destroy the scores'}, status: 422
+                    render json: {error: ai_audited_score.errors.message}, status: 422
                 end
             end
 
