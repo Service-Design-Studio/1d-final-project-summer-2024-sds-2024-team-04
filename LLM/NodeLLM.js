@@ -200,6 +200,19 @@ async function processCases() {
       const chatTranscript = chatTranscriptArray.join('\n');
       const caseId = caseData.id;
 
+      // Update the case status to 1 before processing
+      try {
+        const putResponse = await axios.put(`https://sds-cpf-audit-kr3vrf23oq-as.a.run.app/api/v1/cases/${caseId}`, {
+          case: {
+            status: 1
+          }
+        });
+        console.log('PUT response for status 1:', putResponse.data);
+      } catch (error) {
+        console.error('Error updating case status to 1:', error);
+        continue; // Skip this case and proceed with the next one
+      }
+
       // Evaluate each criterion and store the results
       const results = {};
       const feedback = {};  // To store detailed feedback for each criterion
@@ -240,12 +253,12 @@ async function processCases() {
         console.log('POST response:', postResponse.data);
 
         // Send PUT request to update the case status to 2
-        const putResponse = await axios.put(`https://sds-cpf-audit-kr3vrf23oq-as.a.run.app/api/v1/cases/${caseId}`, {
+        const putResponse2 = await axios.put(`https://sds-cpf-audit-kr3vrf23oq-as.a.run.app/api/v1/cases/${caseId}`, {
           case: {
             status: 2
           }
         });
-        console.log('PUT response:', putResponse.data);
+        console.log('PUT response for status 2:', putResponse2.data);
 
       } catch (error) {
         console.error('Error during API requests:', error);
