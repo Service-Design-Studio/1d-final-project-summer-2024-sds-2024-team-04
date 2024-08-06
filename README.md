@@ -2,20 +2,15 @@
 
 ## Project Overview 📖
 ### CPF Text Us Humanless Audit
-In this project, we were tasked to help the senior officers in CPF audit the scores of officers in CPF's Text Us Chatbot.
-Our Aim is to grade Officers who manage the conversations on the CPF Text-Us Whatsapp platform, on a set of criterias using GenAI instead of having Senior Officers to grade the Officers.
+In this project, our Aim is to grade team members who manage the conversations on the CPF Text-Us Whatsapp platform, on a set of criterias using GenAI instead of having Senior Officers to grade the Officers.
 
 ### Problem Statement
 How can we make the process of auditing chat transcripts less time consuming and unbiased whilst ensuring its results are consistently within the bandwidth of the audits made by a senior officer.
 
 ## Software Architecture 🏗️
+![image](https://github.com/user-attachments/assets/a1bbfa8e-f28b-4e63-8009-d6891ca41521)
 
 
-- **Backend**: Built using Ruby on Rails, the backend provides a RESTful API for the frontend to interact with.
-- **Frontend**: Developed with React.
-- **Database**: The application uses a PostgreSQL database, hosted on Google Cloud SQL.
-- **LLM**: 
- 
 
 ### RESTful API
 
@@ -30,10 +25,15 @@ The application exposes a RESTful API to interact with the system. Below are som
 The application uses a relational database to store data. The database schema is defined in the `db/schema.rb` file, and migrations are used to manage changes to the database structure.
 
 #### Key Tables:
-- `users` - Stores user information
-- `cases` - Stores case details
-- `chat_transcripts` - Stores chat transcripts
-- `ai_audited_scores` - Stores AI-audited scores
+- `user` - Stores user information
+- `case` - Stores case details
+- `chat_transcript` - Stores chat transcripts
+- `ai_audited_score` - Stores AI-audited scores
+- `human_audited_score` - Stores Human-audited scores
+- `audit_criteria` - Stores Grading Criterias
+
+![image](https://github.com/user-attachments/assets/10304e98-dd7d-497f-838f-62c2fcf14bf0)
+
 
 
 ## Getting Started 🛠️
