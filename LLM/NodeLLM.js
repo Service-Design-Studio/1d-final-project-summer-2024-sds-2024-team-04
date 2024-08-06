@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3001;
 app.use(bodyParser.json());
 
 // Path to your service account key file
-const KEY_PATH = path.join(__dirname, 'sds-cpf-429016-8b9ea9770c89.json');
+const KEY_PATH = path.join(__dirname, 'sds-cpf-429016-869c0f7d5aaa.json');
 
 const projectId = "sds-cpf-429016";
 const location = "us-central1";
