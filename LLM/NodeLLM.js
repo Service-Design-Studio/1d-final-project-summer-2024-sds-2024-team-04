@@ -178,51 +178,49 @@ async function evaluateCriterion(criterionName, prompt, transcript) {
   }
 }
 
-app.post('/fetch-and-audit', async (req, res) => {
+async function processCases() {
   try {
-    // Fetch the initial JSON data
-    const fetchResponse = await axios.get('http://localhost:3000/api/v1/unaudited_cases');
-    const data = fetchResponse.data;
+    const response = await axios.get('http://localhost:3000/api/v1/unaudited_cases'); // Change this to the appropriate endpoint
+    const data = response.data;
 
-    // Check if data is empty
+    // Check if data is empty or contains no cases
     if (!data.data || data.data.length === 0) {
-      res.status(204).json({ message: 'No data to process' });
+      console.log('No cases to process');
       return;
     }
 
-    // Process each case individually
-    const results = [];
     for (const caseData of data.data) {
+      const chatTranscriptArray = data.included
+        .filter(item => item.type === 'chat_transcript' && item.attributes.case_id === parseInt(caseData.id))
+        .map(item => item.attributes.message);
+
+      const chatTranscript = chatTranscriptArray.join('\n');
       const caseId = caseData.id;
-      const chatTranscripts = data.included
-        .filter(item => item.type === 'chat_transcript' && item.attributes.case_id === parseInt(caseId))
-        .map(item => `${item.attributes.messagingUser}: ${item.attributes.message}`)
-        .join('\n');
 
       // Evaluate each criterion and store the results
-      const criterionResults = {};
+      const results = {};
       for (const [criterion, prompt] of Object.entries(criteriaPrompts)) {
-        criterionResults[criterion] = await evaluateCriterion(criterion, prompt, chatTranscripts);
+        results[criterion] = await evaluateCriterion(criterion, prompt, chatTranscript);
       }
 
       // Generate feedback based on the criteria results
-      const feedback = Object.entries(criterionResults).map(([criterion, result], index) => `${criterion}: ${result ? 'PASS' : 'FAIL'}`).join('\n');
+      const feedback = Object.entries(results).map(([criterion, result]) => `${criterion}: ${result ? 'PASS' : 'FAIL'}`).join('\n');
 
       // Calculate the score based on the results and round to the nearest whole number
-      const score = Math.round(Object.values(criterionResults).filter(result => result === true).length / Object.keys(criterionResults).length * 100);
+      const score = Math.round(Object.values(results).filter(result => result === true).length / Object.keys(results).length * 100);
 
       // Create the final output as a JSON object in the specified format
       const finalOutput = {
         ai_audited_score: {
-          aiScore1: criterionResults["Accuracy of Information Provided"],
-          aiScore2: criterionResults["Completeness of Responses"],
-          aiScore3: criterionResults["Timeliness of Responses"],
-          aiScore4: criterionResults["Clarity and Understandability"],
-          aiScore5: criterionResults["Professionalism and Courtesy"],
-          aiScore6: criterionResults["Adherence to Company Policies and Procedures"],
-          aiScore7: criterionResults["Problem-Solving Ability"],
-          aiScore8: criterionResults["Use of Service-Oriented Language"],
-          aiScore9: criterionResults["Documentation and Record-Keeping"],
+          aiScore1: results["Accuracy of Information Provided"],
+          aiScore2: results["Completeness of Responses"],
+          aiScore3: results["Timeliness of Responses"],
+          aiScore4: results["Clarity and Understandability"],
+          aiScore5: results["Professionalism and Courtesy"],
+          aiScore6: results["Adherence to Company Policies and Procedures"],
+          aiScore7: results["Problem-Solving Ability"],
+          aiScore8: results["Use of Service-Oriented Language"],
+          aiScore9: results["Documentation and Record-Keeping"],
           aiFeedback: feedback,
           totalScore: score,
           isMadeCorrection: false,
@@ -230,27 +228,30 @@ app.post('/fetch-and-audit', async (req, res) => {
         }
       };
 
-      // Send POST request to save the score
-      const postResponse = await axios.post('http://localhost:3000/api/v1/ai_audited_scores', finalOutput);
-      console.log('POST response:', postResponse.data);
+      try {
+        // Send POST request to save the score
+        const postResponse = await axios.post('http://localhost:3000/api/v1/ai_audited_scores', finalOutput);
+        console.log('POST response:', postResponse.data);
 
-      // Send PUT request to update the case status to 2
-      const putResponse = await axios.put(`http://localhost:3000/api/v1/cases/${caseId}`, {
-        case: {
-          status: 2
-        }
-      });
-      console.log('PUT response:', putResponse.data);
+        // Send PUT request to update the case status to 2
+        const putResponse = await axios.put(`http://localhost:3000/api/v1/cases/${caseId}`, {
+          case: {
+            status: 2
+          }
+        });
+        console.log('PUT response:', putResponse.data);
 
-      results.push(finalOutput);
+      } catch (error) {
+        console.error('Error during API requests:', error);
+      }
     }
-
-    res.json(results);
   } catch (error) {
-    console.error('Error during API requests:', error);
-    res.status(500).json({ error: 'Failed to create audit score or update case status' });
+    console.error('Error fetching cases:', error);
   }
-});
+}
+
+// Schedule the function to run every minute
+setInterval(processCases, 60000);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
