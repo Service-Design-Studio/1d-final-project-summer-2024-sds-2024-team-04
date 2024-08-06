@@ -1,4 +1,4 @@
-Feature: Login
+Feature: Select Case
   As a Senior Officer
   I want to inspect a case that has been audited by the AI
   So that I can check which how well the officer scored on each criteria
