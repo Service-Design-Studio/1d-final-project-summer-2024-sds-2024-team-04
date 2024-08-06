@@ -180,7 +180,7 @@ async function evaluateCriterion(criterionName, prompt, transcript) {
 
 async function processCases() {
   try {
-    const response = await axios.get('http://localhost:3000/api/v1/unaudited_cases'); // Change this to the appropriate endpoint
+    const response = await axios.get('https://sds-cpf-audit-kr3vrf23oq-as.a.run.app/api/v1/unaudited_cases'); // Change this to the appropriate endpoint
     const data = response.data;
 
     // Check if data is empty or contains no cases
@@ -230,11 +230,11 @@ async function processCases() {
 
       try {
         // Send POST request to save the score
-        const postResponse = await axios.post('http://localhost:3000/api/v1/ai_audited_scores', finalOutput);
+        const postResponse = await axios.post('https://sds-cpf-audit-kr3vrf23oq-as.a.run.app/api/v1/ai_audited_scores', finalOutput);
         console.log('POST response:', postResponse.data);
 
         // Send PUT request to update the case status to 2
-        const putResponse = await axios.put(`http://localhost:3000/api/v1/cases/${caseId}`, {
+        const putResponse = await axios.put(`https://sds-cpf-audit-kr3vrf23oq-as.a.run.app/api/v1/cases/${caseId}`, {
           case: {
             status: 2
           }
