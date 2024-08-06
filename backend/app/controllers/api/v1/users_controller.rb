@@ -27,10 +27,12 @@ module Api
             def update
                 user = User.find_by(id: params[:id])
 
-                if user.update(user_params)
+                if user.nil?
+                    render json: { error: 'User not found' }, status: :not_found
+                elsif user.update(user_params)
                     render json: UserSerializer.new(user).serialized_json
                 else
-                    render json: {error: user.errors.message}, status: 422
+                    render json: {error: user.errors.full_messages}, status: 422
                 end
             end
 

@@ -10,15 +10,6 @@ export default function AuditedCaseReview() {
     const navigate = useNavigate();
     const parms = useParams();
     const [isLoading, setIsLoading] = useState(false);
-<<<<<<< HEAD
-    const [cases, setCase] = useState(null);
-    const [employee, setEmployee] = useState(null);
-    const [aiAuditedScore, setAiAuditedScore] = useState(null);
-    const [chatTranscript, setChatTranscript] = useState([]);
-    const [modalShow, setModalShow] = useState(false);
-    const [editScore, setEditScore] = useState(null);
-    const [comment, setComment] = useState('Some comments are here!');
-=======
     const [cases, setCase] = useState(null)
     const [employee, setEmployee] = useState(null)
     const [aiAuditedScore, setAiAuditedScore] = useState(null)
@@ -26,25 +17,36 @@ export default function AuditedCaseReview() {
     const [chatTranscript, setChatTranscript] = useState([])
     const [modalShow, setModalShow] = useState(false)
     const [editScore, setEditScore] = useState(null)
->>>>>>> origin/min-khant
 
     useEffect(() => {
         getCase();
     }, []);
 
     useEffect(() => {
-<<<<<<< HEAD
-        if (aiAuditedScore !== null) {
-            setEditScore(aiAuditedScore.attributes);
-=======
         if(aiAuditedScore !== null){
             setEditScore(aiAuditedScore.attributes)
             if(aiAuditedScore.relationships.human_audited_score.data.length !== 0){
                 getHumanAuditedScore((aiAuditedScore.relationships.human_audited_score.data[aiAuditedScore.relationships.human_audited_score.data.length -1].id))
             }
->>>>>>> origin/min-khant
         }
-    }, [aiAuditedScore]);
+    },[aiAuditedScore])
+
+    useEffect(() => {
+        if(huAuditedScore !== null){
+            setEditScore((scores) => ({ ...scores, aiScore1: huAuditedScore.attributes.huScore1 }))
+            setEditScore((scores) => ({ ...scores, aiScore2: huAuditedScore.attributes.huScore2 }))
+            setEditScore((scores) => ({ ...scores, aiScore3: huAuditedScore.attributes.huScore3 }))
+            setEditScore((scores) => ({ ...scores, aiScore4: huAuditedScore.attributes.huScore4 }))
+            setEditScore((scores) => ({ ...scores, aiScore5: huAuditedScore.attributes.huScore5 }))
+            setEditScore((scores) => ({ ...scores, aiScore6: huAuditedScore.attributes.huScore6 }))
+            setEditScore((scores) => ({ ...scores, aiScore7: huAuditedScore.attributes.huScore7 }))
+            setEditScore((scores) => ({ ...scores, aiScore8: huAuditedScore.attributes.huScore8 }))
+            setEditScore((scores) => ({ ...scores, aiScore9: huAuditedScore.attributes.huScore9 }))
+            setEditScore((scores) => ({ ...scores, totalScore: huAuditedScore.attributes.huTotalScore }))
+            setEditScore((scores) => ({ ...scores, aiFeedback: huAuditedScore.attributes.huFeedback }))
+        }
+    },[huAuditedScore])
+
 
     useEffect(() => {
 <<<<<<< HEAD
@@ -98,12 +100,31 @@ export default function AuditedCaseReview() {
                 setIsLoading(false);
             })
             .catch(() => {
-                console.log('Unable to fetch cases!');
-                setIsLoading(true);
-            });
-    };
+                console.log("Unable to fetch cases!")
+                setIsLoading(true)
+            })
+    }
 
-<<<<<<< HEAD
+    const getHumanAuditedScore = (id) => {
+        setIsLoading(true);
+        const requestOptions = {
+            method: "GET",
+            redirect: "follow"
+        };
+
+        fetch(`http://127.0.0.1:3000/api/v1/human_audited_scores/${id}`, requestOptions)
+            .then((respnse) => respnse.json())
+            .then((response) => {
+                console.log(JSON.stringify(response))
+                setHuAuditedScore(response.data)
+                setIsLoading(false)
+            })
+            .catch(() => {
+                console.log("Unable to fetch cases!")
+                setIsLoading(true)
+            })
+    }
+
     const getTranscript = async () => {
         var tempTranscript = [];
 =======
@@ -159,10 +180,10 @@ export default function AuditedCaseReview() {
                 setIsLoading(false);
             })
             .catch(() => {
-                console.log('Unable to fetch ai score!');
-                setIsLoading(true);
-            });
-    };
+                console.log("Unable to fetch ai score!")
+                setIsLoading(true)
+            })
+    }
 
     const updateAiAuditedScore = () => {
         const myHeaders = new Headers();
@@ -208,12 +229,54 @@ export default function AuditedCaseReview() {
                 setIsLoading(false);
             })
             .catch(() => {
-                console.log('Unable to fetch employee!');
-                setIsLoading(true);
-            });
-    };
+                console.log("Unable to fetch employee!")
+                setIsLoading(true)
+            })
+    }
 
-<<<<<<< HEAD
+    const overrideResult = () => {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json")
+
+        const raw = JSON.stringify({
+            "huScore1": editScore.aiScore1,
+            "huScore2": editScore.aiScore2,
+            "huScore3": editScore.aiScore3,
+            "huScore4": editScore.aiScore4,
+            "huScore5": editScore.aiScore5,
+            "huScore6": editScore.aiScore6,
+            "huScore7": editScore.aiScore7,
+            "huScore8": editScore.aiScore8,
+            "huScore9": editScore.aiScore9,
+            "huFeedback": editScore.aiFeedback,
+            "huTotalScore": 80,
+            "user_id": 1,
+            "ai_audited_score_id": parseInt(aiAuditedScore.id)
+        })
+
+        console.log(raw)
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            //redirect: "folllow"
+        };
+
+        fetch(`http://127.0.0.1:3000/api/v1/human_audited_scores`, requestOptions)
+            .then((respnse) => respnse.json())
+            .then((response) => {
+                console.log(JSON.stringify(response))
+                updateAiAuditedScore()
+                setModalShow(false)
+                setIsLoading(false)
+            })
+            .catch((response) => {
+                console.log(response)
+                setIsLoading(true)
+            })
+    }
+
     const chatTranscriptList = chatTranscript.map((item, index) => (
         <div className={`chat-message ${item.attributes.messagingUser === 'Officer' ? 'sent' : 'received'}`} key={index}>
             <div className="chat-user">{item.attributes.messagingUser}</div>

@@ -168,7 +168,7 @@ const Dashboard = () => {
 
 
     const unAuditedCasecardList = filteredCases.filter(item => item.attributes.status === 0).map((item, index) => (
-        <div className="dash-case-warp no-active" key={index}>
+        <div className="dash-case-warp" key={index} onClick={() => navigate(`/auditedcasereview/${item.id}`)}>
             <div style={{ width: "5%" }}>{item.id}</div>
             <div style={{ width: "15%" }}>{item.attributes.messagingSection}</div>
             <div style={{ width: "15%" }}>{`OfficerID: ${item.attributes.employee_id}`}</div>
@@ -176,9 +176,7 @@ const Dashboard = () => {
             <div style={{ width: "25%" }}>
                 {moment(item.attributes.created_at).format("MMMM DD YYYY, HH:mm:ss")}
             </div>
-            <div className="btn-audit" onClick={() => audit(item)}>
-                Audit
-            </div>
+            <div className="status-in-progress">In Progress</div>
         </div>
     ));
 
@@ -191,11 +189,11 @@ const Dashboard = () => {
             <div style={{ width: "25%" }}>
                 {moment(item.attributes.created_at).format("MMMM DD YYYY, HH:mm:ss")}
             </div>
-            {item.attributes.status === 1 ? (
-                <div className="status-in-progress">In Progress</div>
-            ) : (
-                <div className="status-completed">Completed</div>
-            )}
+            {
+                item.attributes.status == 1 ?
+                <div style={{ backgroundColor: "rgba(255, 240, 0, 0.4)", padding: "3px", borderRadius: '5px', width: '15%'}}>In Progress</div> :
+                <div style={{ backgroundColor: "rgba(0, 255, 0, 0.4)", padding: "3px", borderRadius: '5px', width: '15%'}}>Completed</div>
+            }
         </div>
     ));
     
