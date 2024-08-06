@@ -152,6 +152,15 @@ const criteriaPrompts = {
   - Is there evidence that the conversation and actions are properly documented?
 
   Result (PASS or FAIL):
+  `,
+
+  "Customer Service Feedback": `
+  Please provide overall feedback on the customer service agent's performance based on the following chat transcript. Include strengths and areas for improvement.
+
+  Chat Transcript:
+  {transcript}
+
+  Overall Feedback:
   `
 };
 
@@ -165,13 +174,7 @@ async function evaluateCriterion(criterionName, prompt, transcript) {
   try {
     const result = await model.generateContent(request);
     const resultText = result.response.candidates[0].content.parts[0].text.trim();
-    let outcome = "UNDETERMINED";
-    if (resultText.includes("PASS")) {
-      outcome = true;
-    } else if (resultText.includes("FAIL")) {
-      outcome = false;
-    }
-    return outcome;
+    return resultText;  // Return the full feedback text instead of just "PASS" or "FAIL"
   } catch (error) {
     console.error("Error generating content:", error);
     return "ERROR";
@@ -199,12 +202,15 @@ async function processCases() {
 
       // Evaluate each criterion and store the results
       const results = {};
+      const feedback = {};  // To store detailed feedback for each criterion
       for (const [criterion, prompt] of Object.entries(criteriaPrompts)) {
-        results[criterion] = await evaluateCriterion(criterion, prompt, chatTranscript);
+        const feedbackText = await evaluateCriterion(criterion, prompt, chatTranscript);
+        feedback[criterion] = feedbackText;
+        results[criterion] = feedbackText.includes("PASS");
       }
 
-      // Generate feedback based on the criteria results
-      const feedback = Object.entries(results).map(([criterion, result]) => `${criterion}: ${result ? 'PASS' : 'FAIL'}`).join('\n');
+      // Generate overall feedback based on the criteria results
+      const overallFeedback = feedback["Customer Service Feedback"];
 
       // Calculate the score based on the results and round to the nearest whole number
       const score = Math.round(Object.values(results).filter(result => result === true).length / Object.keys(results).length * 100);
@@ -221,7 +227,7 @@ async function processCases() {
           aiScore7: results["Problem-Solving Ability"],
           aiScore8: results["Use of Service-Oriented Language"],
           aiScore9: results["Documentation and Record-Keeping"],
-          aiFeedback: feedback,
+          aiFeedback: Object.entries(feedback).map(([criterion, text]) => `${criterion} Feedback:\n${text}`).join('\n\n'),
           totalScore: score,
           isMadeCorrection: false,
           case_id: caseId
