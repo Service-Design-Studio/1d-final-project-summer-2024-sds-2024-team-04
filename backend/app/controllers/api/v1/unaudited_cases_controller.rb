@@ -3,11 +3,13 @@ module Api
         class UnauditedCasesController < ApplicationController
             protect_from_forgery with: :null_session
             def index
-                cases = Case.find_by(status: 0)
+                cases = Case.where(status: 0)
                 
                 render json: CaseSerializer.new(cases, options).serialized_json
                 
             end
+
+            
 
             private
 
@@ -16,9 +18,9 @@ module Api
               end
         
 
-            def case_params
-                params.require(:case).permit(:messagingSection, :phoneNumber, :topic, :status, :employee_id)
-            end
+            #def case_params
+            #    params.require(:case).permit(:messagingSection, :phoneNumber, :topic, :status, :employee_id)
+            #end
         end
     end
 end

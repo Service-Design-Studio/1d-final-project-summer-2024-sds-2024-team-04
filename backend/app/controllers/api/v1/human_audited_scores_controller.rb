@@ -11,7 +11,11 @@ module Api
             def show
                 human_audited_score = HumanAuditedScore.find_by(id: params[:id])
                 
-                render json: HumanAuditedScoreSerializer.new(human_audited_score).serialized_json
+                if human_audited_score
+                    render json: HumanAuditedScoreSerializer.new(human_audited_score).serialized_json
+                else
+                    render json: {error: 'Score not found'}, status: :not_found
+                end
             end
 
             def create
@@ -26,8 +30,10 @@ module Api
 
             def update
                 human_audited_score = HumanAuditedScore.find_by(id: params[:id])
-
-                if human_audited_score.update(human_audited_score_params)
+                
+                if human_audited_score.nil?
+                    render json: { error: 'Score not found' }, status: :not_found 
+                elsif human_audited_score.update(human_audited_score_params)
                     render json: HumanAuditedScoreSerializer.new(human_audited_score).serialized_json
                 else
                     render json: {error: human_audited_score.errors}, status: 422
@@ -36,11 +42,11 @@ module Api
 
             def destroy
                 human_audited_score = HumanAuditedScore.find_by(id: params[:id])
-
-                if human_audited_score.destroy
+                
+                if human_audited_score.nil?
+                    render json: { error: 'Score not found' }, status: :not_found
+                elsif human_audited_score.destroy
                     head :no_content
-                else
-                    render json: {error: human_audited_score.errors.message}, status: 422
                 end
             end
 
