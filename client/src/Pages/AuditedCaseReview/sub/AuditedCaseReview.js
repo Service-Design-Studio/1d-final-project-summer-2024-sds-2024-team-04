@@ -103,6 +103,67 @@ export default function AuditedCaseReview() {
             })
     }
 
+    const calculateScore = () => {
+        var score = 0
+        if(editScore.aiScore1 == true){
+            score = score
+        }
+        else{
+            score = score - 10
+        }
+        if(editScore.aiScore2 == true){
+            score = score
+        }
+        else{
+            score = score - 20
+        }
+        if(editScore.aiScore3 == true){
+            score = score + 15
+        }
+        else{
+            score = score
+        }
+        if(editScore.aiScore4 == true){
+            score = score +15
+        }
+        else{
+            score = score
+        }
+        if(editScore.aiScore5 == true){
+            score = score + 15
+        }
+        else{
+            score = score - 20
+        }
+        if(editScore.aiScore6 == true){
+            score = score + 15
+        }
+        else{
+            score = score - 20
+        }
+        if(editScore.aiScore7 == true){
+            score = score + 20
+        }
+        else{
+            score = score
+        }
+        if(editScore.aiScore8 == true){
+            score = score + 15
+        }
+        else{
+            score = score
+        }
+        if(editScore.aiScore5 == true){
+            score = score + 5
+        }
+        else{
+            score = score
+        }
+        console.log(score)
+        setEditScore((scores) => ({ ...scores, totalScore: score }))
+        overrideResult(score)
+    }
+
     const getTranscript = async () => {
         var tempTranscript = [];
         setIsLoading(true);
@@ -188,7 +249,7 @@ export default function AuditedCaseReview() {
             })
     }
 
-    const overrideResult = () => {
+    const overrideResult = (score) => {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json")
 
@@ -203,7 +264,7 @@ export default function AuditedCaseReview() {
             "huScore8": editScore.aiScore8,
             "huScore9": editScore.aiScore9,
             "huFeedback": editScore.aiFeedback,
-            "huTotalScore": 80,
+            "huTotalScore": score,
             "user_id": 1,
             "ai_audited_score_id": parseInt(aiAuditedScore.id)
         })
@@ -590,7 +651,7 @@ export default function AuditedCaseReview() {
                 
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={() => overrideResult()}>Submit</Button>
+                <Button onClick={() => calculateScore()}>Submit</Button>
                 <Button onClick={() => setModalShow(false)}>Close</Button>
             </Modal.Footer>
             </Modal>
