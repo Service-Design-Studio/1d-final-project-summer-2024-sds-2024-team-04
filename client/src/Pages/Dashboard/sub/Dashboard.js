@@ -5,7 +5,7 @@ import moment from 'moment'
 //Component
 import { Col } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import Loader from '../../../Components/Loader'
+//import Loader from '../../../Components/Loader'
 
 //CSS
 import './Dashboard.css'
@@ -201,66 +201,68 @@ const Dashboard = () => {
     
 
   return (
-    <div className="dashboard_container">
-            <h2 style={{ marginBottom: "20px" }}>Dashboard</h2>
-                <div className="dash-col-wrap">
-                    <Col className="dash-col">
-                        <div className="first-group" style={{ padding: "0px" }}>
-                            <div className="dash-card-one">
-                                <div className="dash-text-one">Total Cases</div>
-                                <div className="dash-text-two">{cases.length}</div>
-                            </div>
-                            <div className="dash-card-one">
-                                <div className="dash-text-one">Total Audited Cases</div>
-                                <div className="dash-text-two">{totalAuditedCase}</div>
-                            </div>
-                            <div className="dash-card-one">
-                                <div className="dash-text-one">Average Score</div>
-                                <div className="dash-text-two">{`${averageScore}%`}</div>
-                            </div>
+    <div className="dashboard_container" data-testid="dashboard">
+            <h2 style={{ marginBottom: "20px" }} data-testid="dashboard-title">Dashboard</h2>
+            <div className="dash-col-wrap">
+                <Col className="dash-col">
+                    <div className="first-group" style={{ padding: "0px" }}>
+                        <div className="dash-card-one" data-testid='total-cases'>
+                            <div className="dash-text-one" >Total Cases</div>
+                            <div className="dash-text-two" >{cases.length}</div>
                         </div>
-                        <div className="dash-card-four">
-                            <div className="dash-text-one">Recent Audits</div>
-                            <div className="search-bar-container" style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-                                <select
-                                    className="search-dropdown"
-                                    value={searchBy}
-                                    onChange={(e) => setSearchBy(e.target.value)}
-                                    style={{ marginRight: '10px' }}
-                                >
-                                    <option value="ID">ID</option>
-                                    <option value="Section">Section</option>
-                                    <option value="Officer">Officer</option>
-                                    <option value="Topic">Topic</option>
-                                </select>
-                                <input
-                                    className="search-bar"
-                                    type="text"
-                                    value={searchInput}
-                                    onChange={(e) => setSearchInput(e.target.value)}
-                                    placeholder={`Search by ${searchBy}`}
-                                    style={{ width: '200px' }}
-                                />
-                            </div>
-                            <div className="dash-case-title-warp">
-                                <div style={{ width: "5%" }}>ID</div>
-                                <div style={{ width: "15%" }}>Section</div>
-                                <div style={{ width: "15%" }}>Officer</div>
-                                <div style={{ width: "15%" }}>Topic</div>
-                                <div style={{ width: "25%" }}>Timestamp</div>
-                                <div style={{ width: "15%" }}>Status</div>
-                            </div>
-                            {unAuditedCasecardList}
-                            {auditedCasecardList.length > 0 && auditedCasecardList}
+                        <div className="dash-card-one" data-testid="total-audited-cases">
+                            <div className="dash-text-one">Total Audited Cases</div>
+                            <div className="dash-text-two">{totalAuditedCase}</div>
                         </div>
-                    </Col>
-                </div>
-                {
-                    isLoading &&
-                    <div className='loader'>
-                        <Loader />
+                        <div className="dash-card-one" data-testid="average-score">
+                            <div className="dash-text-one">Average Score</div>
+                            <div className="dash-text-two">{`${averageScore}%`}</div>
+                        </div>
                     </div>
-                }
+                    <div className="dash-card-four" data-testid="recent-audits">
+                        <div className="dash-text-one">Recent Audits</div>
+                        <div className="search-bar-container" style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+                            <select
+                                className="search-dropdown"
+                                value={searchBy}
+                                onChange={(e) => setSearchBy(e.target.value)}
+                                style={{ marginRight: '10px' }}
+                                data-testid="search-dropdown"
+                            >
+                                <option value="ID">ID</option>
+                                <option value="Section">Section</option>
+                                <option value="Officer">Officer</option>
+                                <option value="Topic">Topic</option>
+                            </select>
+                            <input
+                                className="search-bar"
+                                type="text"
+                                value={searchInput}
+                                onChange={(e) => setSearchInput(e.target.value)}
+                                placeholder={`Search by ${searchBy}`}
+                                style={{ width: '200px' }}
+                                data-testid="search-input"
+                            />
+                        </div>
+                        <div className="dash-case-title-warp" data-testid="case-titles">
+                            <div style={{ width: "5%" }}>ID</div>
+                            <div style={{ width: "15%" }}>Section</div>
+                            <div style={{ width: "15%" }}>Officer</div>
+                            <div style={{ width: "15%" }}>Topic</div>
+                            <div style={{ width: "25%" }}>Timestamp</div>
+                            <div style={{ width: "15%" }}>Status</div>
+                        </div>
+                        {unAuditedCasecardList}
+                        {auditedCasecardList.length > 0 && auditedCasecardList}
+                    </div>
+                </Col>
+            </div>
+            {
+                isLoading &&
+                <div className='loader' data-testid='loading'>
+                    Loading...
+                </div>
+            }
         </div>
     );
 };

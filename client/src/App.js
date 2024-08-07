@@ -12,7 +12,6 @@ import './App.css';
 
 const IndexNotFound = lazy( () => import ("./Pages/404"))
 const Dashboard = lazy(()=> import("./Pages/Dashboard"));
-const AuditList = lazy(()=> import("./Pages/AuditList"));
 const AuditedCaseReview = lazy(()=> import("./Pages/AuditedCaseReview"));
 
 class App extends Component {
@@ -43,7 +42,6 @@ const DefaultContainer = () => (
         }>
           <Routes>
             <Route strict path="/dashboard/*" element={<Dashboard/>} />
-            <Route strict path="/auditList/*" element={<AuditList/>} />
             <Route strict path="/auditedcasereview/*" element={<AuditedCaseReview/>} />
             <Route strich path="/*" element={<IndexNotFound/>} />
           </Routes>
