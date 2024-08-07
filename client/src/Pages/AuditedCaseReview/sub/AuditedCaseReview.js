@@ -159,6 +159,9 @@ export default function AuditedCaseReview() {
         else{
             score = score
         }
+        if(score < 0) {
+            score = 0
+        }
         console.log(score)
         setEditScore((scores) => ({ ...scores, totalScore: score }))
         overrideResult(score)
