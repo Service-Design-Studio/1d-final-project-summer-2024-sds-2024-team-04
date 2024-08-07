@@ -5,6 +5,7 @@ import moment from 'moment'
 //Component
 import { Col } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
+import Loader from '../../../Components/Loader'
 
 //CSS
 import './Dashboard.css'
@@ -24,6 +25,7 @@ const Dashboard = () => {
 
 
     useEffect(() => {
+        setIsLoading(true)
         getCases()
         getAiAuditedScore()
 
@@ -86,7 +88,7 @@ const Dashboard = () => {
             })
             .catch(() => {
                 console.log("Unable to fetch cases!")
-                setIsLoading(true)
+                setIsLoading(false)
             })
     }
 
@@ -201,9 +203,6 @@ const Dashboard = () => {
   return (
     <div className="dashboard_container">
             <h2 style={{ marginBottom: "20px" }}>Dashboard</h2>
-            {isLoading ? (
-                <div className="loading">Loading...</div>
-            ) : (
                 <div className="dash-col-wrap">
                     <Col className="dash-col">
                         <div className="first-group" style={{ padding: "0px" }}>
@@ -256,7 +255,12 @@ const Dashboard = () => {
                         </div>
                     </Col>
                 </div>
-            )}
+                {
+                    isLoading &&
+                    <div className='loader'>
+                        <Loader />
+                    </div>
+                }
         </div>
     );
 };
